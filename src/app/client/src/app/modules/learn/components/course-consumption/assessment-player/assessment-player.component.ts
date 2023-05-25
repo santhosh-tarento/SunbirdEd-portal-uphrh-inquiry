@@ -16,7 +16,7 @@ import * as TreeModel from 'tree-model';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
-
+import * as uuid from 'uuid';
 const ACCESSEVENT = 'renderer:question:submitscore';
 
 @Component({
@@ -885,6 +885,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       }
       if (this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+        if(!this.activeContent.evaluable){
         this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
           takeUntil(this.unsubscribe))
           .subscribe((response) => {
@@ -911,6 +912,51 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.toasterService.error(this.resourceService.messages.stmsg.m0009);
             this.showLoader = false;
           });
+        } {
+          console.log('*********************')
+          const requestBody = {
+            contentID: id,
+            collectionID: this.courseHierarchy.identifier, 
+            userID: this.userService._userid,
+            attemptID: uuid.v4(id)
+          }
+          console.log('**********************', requestBody)
+          /* use this method remove below getQuestionSetHierarchy just remove
+            .subscribe(response => {
+              console.log(response);
+            });
+            this.publicPlayerService.getQuestionSetHierarchy(id)  
+          */
+          this.playerService.getQuestionSetHierarchyByPost(requestBody).subscribe(response => {
+            console.log(response);
+          });
+          this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
+            takeUntil(this.unsubscribe))
+            .subscribe((response) => {
+              const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
+              this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
+              if (response && response.context) {
+                response.context.objectRollup = this.objectRollUp;
+              }
+              const contentDetails = {contentId: id, contentData: response.questionSet };
+              this.playerConfig = serveiceRef.getConfig(contentDetails);
+              this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+                this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+                this.showPlayer = true;
+              }, (error) => {
+                this.showPlayer = true;
+              });
+              const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
+              this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+              const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+              this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+              this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
+              this.showLoader = false;
+            }, (err) => {
+              this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+              this.showLoader = false;
+            });
+        } 
       } else {
       this.courseConsumptionService.getConfigByContent(id, options)
         .pipe(first(), takeUntil(this.unsubscribe))

@@ -13,6 +13,7 @@ import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 import { PublicDataService } from './../public-data/public-data.service';
+import { HttpClient } from '@angular/common/http';
 /**
  * helper services to fetch content details and preparing content player config
  */
@@ -31,7 +32,7 @@ export class PlayerService {
   previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
-    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute) {
+    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute, private http: HttpClient) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
@@ -235,5 +236,9 @@ export class PlayerService {
     } else {
       this.router.navigate(['/learn/course', content.identifier], { queryParams });
     }
+  }
+
+  public getQuestionSetHierarchyByPost(req){
+    return this.http.post('/learner/questionset/v1/hierarchy', req);
   }
 }
