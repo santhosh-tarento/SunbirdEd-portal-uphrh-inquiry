@@ -58,6 +58,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() enrolledBatchInfo: any;
   @Input() groupId: string;
   @Input() showAddGroup = false;
+  @Input() showMenu = false;
   @Input() layoutConfiguration;
   isGroupAdmin = false;
   enrolledCourse = false;

@@ -148,10 +148,11 @@ export class AppComponent implements OnInit, OnDestroy {
     const layoutType = localStorage.getItem('layoutType') || 'base';
     if (layoutType === 'base' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
-      document.documentElement.setAttribute('layout', 'joy');
+      document.documentElement.setAttribute('layout','base');
     } else {
       document.documentElement.setAttribute('layout', 'base');
     }
+    localStorage.setItem('layoutType','default');
   }
   
   /**
@@ -387,7 +388,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.initApp = true;
-        localStorage.setItem('joyThemePopup', 'true');
+        localStorage.setItem('joyThemePopup', 'false');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
       }, error => {
@@ -467,11 +468,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   joyThemePopup() {
     const joyThemePopup = localStorage.getItem('joyThemePopup');
-    // if (joyThemePopup === 'true') {
-    //   this.checkTncAndFrameWorkSelected();
-    // } else {
-    //   this.showJoyThemePopUp = true;
-    // }
+    if (joyThemePopup === 'true') {
+      this.checkTncAndFrameWorkSelected();
+    } else {
+      this.showJoyThemePopUp = true;
+    }
     this.checkTncAndFrameWorkSelected();
   }
 

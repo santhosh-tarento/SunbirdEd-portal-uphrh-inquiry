@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "aot": true,
             "outputPath": "../dist",
             "index": "src/index.html",
@@ -27,7 +28,7 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption/assets",
+                "input": "./node_modules/uphrh-common-consumption/assets",
                 "output": "./assets/common-consumption"
               },
               {
@@ -72,9 +73,9 @@
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
               "node_modules/katex/dist/katex.min.css",
-              "./node_modules/@project-sunbird/sb-themes/themes/themes-material_UI.scss",
-              "./node_modules/@project-sunbird/sb-themes/themes/themes-df.scss",
-              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
+              "./node_modules/uphrh-sb-themes/themes/themes-material_UI.scss",
+              "./node_modules/uphrh-sb-themes/themes/themes-df.scss",
+              "./node_modules/uphrh-sb-themes/themes/themes-portal.scss",
               "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
               "node_modules/@project-sunbird/sunbird-video-player-v9/lib/assets/videojs.markers.min.css",
               "node_modules/videojs-http-source-selector/dist/videojs-http-source-selector.css"

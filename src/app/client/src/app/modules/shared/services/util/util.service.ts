@@ -472,6 +472,13 @@ export class UtilService {
   }
 
   getRandomColor(colorSet) {
+    console.log('hiiiii', colorSet)
+    colorSet = [
+      {
+        primary: 'rgb(242,134,119)',
+        secondary: 'rgba(255,255,255,1)'
+      }
+    ]
     if (colorSet.length > 0) {
       const randomColor = _.sample(colorSet);
       return {

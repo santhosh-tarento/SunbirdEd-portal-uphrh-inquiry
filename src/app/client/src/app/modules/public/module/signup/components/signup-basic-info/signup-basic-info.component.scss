@@ -1,8 +1,8 @@
 @use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
 
 .sb-mat__dropdown.sb-mat__dropdown--autocmp {
-  border: calculateRem(1px) solid var(--gray-200);
-  border-radius: calculateRem(24px);
+  // border: calculateRem(1px) solid var(--gray-200);
+  // border-radius: calculateRem(24px);
 }
 
 ::ng-deep {

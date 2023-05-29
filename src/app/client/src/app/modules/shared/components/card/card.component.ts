@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
-  templateUrl: './card.component.html'
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
   /**
@@ -14,7 +15,7 @@ export class CardComponent {
   @Input() data: ICard;
   @Input() dialCode: string;
   @Input() customClass: string;
-  @Input() hideProgress: boolean;
+  @Input() hideProgress: boolean = true;
   @Output() clickEvent = new EventEmitter<any>();
   telemetryCdata: Array<{}> = [];
   hover: Boolean;
@@ -27,6 +28,10 @@ export class CardComponent {
       this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
+    setTimeout(()=>{
+
+      console.log(this.data,'data')
+    }, 50000)
   }
 
   public onAction(data, action) {

@@ -3,6 +3,16 @@
     <div  class="ui container">
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
+          <label class="d-flex flex-w-wrap mb-16 flex-jc-center">
+            <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 mobile only pl-0">
+              <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
+              <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+            </ul>
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
+              {{resourceService.frmelmnts?.lnk?.footerTnC}}
+            </a>
+            <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+          </label>
         </div>
   
         <div *ngIf="showDownloadMobileApp" class="download-mobile-app">
@@ -22,17 +32,7 @@
             <p class="d-block pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
           </div>
         </div>
-        <div class="four wide column contantDetails">
-          <label class="d-flex flex-w-wrap mb-16 flex-jc-center">
-            <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 mobile only pl-0">
-              <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-              <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>
-            </ul>
-            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
-              {{resourceService.frmelmnts?.lnk?.footerTnC}}
-            </a>
-            <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
-          </label>
+        <div class="six wide column contantDetails">
           <label class="sb-footer-license">
            <span><img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
           </label>

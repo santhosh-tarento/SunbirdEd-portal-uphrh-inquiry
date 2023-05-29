@@ -1,7 +1,7 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 <app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null"
-    [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId"
+    [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId" [showMenu]="true"
     [showAddGroup]="showAddGroup" [layoutConfiguration]="layoutConfiguration"></app-course-consumption-header>
 <div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <router-outlet *ngIf="!showLoader && !showError"></router-outlet>

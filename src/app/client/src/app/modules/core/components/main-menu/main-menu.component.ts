@@ -47,7 +47,6 @@ export class MainMenuComponent implements OnInit {
    * reference of Router.
    */
   private router: Router;
-
   @Input()
   public layoutConfiguration: any;
   homeMenuIntractEdata: IInteractEventEdata;

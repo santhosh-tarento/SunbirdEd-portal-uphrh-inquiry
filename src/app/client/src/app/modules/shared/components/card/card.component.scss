@@ -1,0 +1,140 @@
+@use "~@project-sunbird/sb-styles/assets/mixins/mixins" as *;
+.sb-card {
+    width: calculateRem(292px);
+    background-color: var(--sb-card-bg);
+    border: var(--sb-card-border);
+    border-radius: calculateRem(2px);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-top: calculateRem(3px);
+    transition: box-shadow 0.3s ease-out, transform 0.3s ease-out,
+      opacity 0.2s ease-out;
+    transition-delay: 0.1s;
+    border: 1px solid rgba(0,0,0, 0.1);
+    box-shadow: 0px 2px 4px rgba(0,0,0, 0.08);
+    opacity: 1;
+    background-color: rgba(255,255,255, 1);
+    &:hover {
+      transform: translate(0, calculateRem(-3px));
+      box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
+    }
+  
+    .sb-card-body {
+      height: calculateRem(189px);
+      padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
+      overflow: hidden;
+    }
+  
+    .sb-card-metas {
+      display: flex;
+      align-items: flex-end;
+    }
+  
+    .sb-card-image {
+      display: none;
+  
+      img {
+        width: calculateRem(70px);
+        height: calculateRem(92px);
+        object-fit: cover;
+      }
+    }
+  
+    .sb-card-meta {
+      height: calculateRem(32px);
+      width: calculateRem(172px);
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  
+    .sb-card-label {
+      color: var(--primary-theme);
+      font-size: calculateRem(11px);
+      border: calculateRem(1px) solid var(--primary-theme);
+      border-radius: calculateRem(2px);
+      padding: calculateRem(4px) calculateRem(8px);
+      height: calculateRem(24px);
+      text-transform: uppercase;
+    }
+  
+    .sb-card-badge {
+      height: calculateRem(30px);
+      width: calculateRem(30px);
+      object-fit: contain;
+      margin: 0 0 0 auto;
+    }
+  
+    .sb-card-meta-item {
+      font-size: var(--font-size-sm);
+      color: var(--sb-card-text);
+      width: calculateRem(172px);
+      line-height: calculateRem(17px);
+    }
+  
+    .sb-card-title {
+      color: var(--primary-color);
+      font-size: var(--h6-font-size);
+      line-height: calc(var(--h6-font-size) * 1.25);
+      font-weight: var(--font-weight-bold);
+      height: calc((var(--h6-font-size) * 1.25) * 2);
+      margin: calculateRem(16px) 0 calculateRem(8px) 0;
+      overflow: hidden;
+    }
+  
+    .sb-card-org {
+      font-size: var(--h6-font-size);
+      color: var(--sb-card-text);
+    }
+  
+    .sb-card-progressbar {
+      height: calculateRem(4px);
+  
+      .ui.progress .bar {
+        border-radius: 0 calculateRem(4px) calculateRem(4px) calculateRem(4px);
+      }
+    }
+  
+    .sb-card-hover {
+      position: absolute;
+      top: 0;
+      max-width: calculateRem(292px);
+      width: 100%;
+      height: 100%;
+      background-color: rgba(var(--rc-rgba-primary), 0.85);
+      // display: none;
+  
+      .sb-card-hover-content {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        justify-content: center;
+      }
+  
+      &.sb-card-hover-grey {
+        background: rgba(var(--rc-rgba-gray-300), 0.95);
+  
+        .sb-exclamation-icon,
+        p {
+          color: var(--white);
+        }
+      }
+    }
+  
+    &:hover {
+      .sb-card-hover {
+        display: block;
+      }
+  
+      box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
+    }
+    
+}
+::ng-deep .mat-progress-bar .mat-progress-bar-fill::after {
+    background-color: var(--primary-theme) !important;
+}
+::ng-deep .mat-progress-bar-buffer {
+  background-color: rgb(229, 229, 229) !important;
+}

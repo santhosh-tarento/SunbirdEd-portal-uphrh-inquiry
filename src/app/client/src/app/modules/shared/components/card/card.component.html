@@ -11,7 +11,6 @@
         <img src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
       </div>
       <!--/Image-->
-
       <!--Meta Details - Course-->
       <div class="sb-card-meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
         <div class="d-flex mb-auto">
@@ -57,6 +56,9 @@
     </h4>
     <!--/Card Title-->
 
+    <div class="ellipsis" *ngIf="data.subject">
+      Competency: {{data.subject ? data.subject[0] :''}}
+    </div>
     <!--Org-->
     <div class="sb-card-org ellipsis">
       {{data.orgDetails?.orgName ? data.orgDetails?.orgName : data?.organisation}}
@@ -65,10 +67,9 @@
 
   </div>
   <!--/Body-->
-
   <!--Progress Bar-->
-  <div class="sb-card-progressbar" *ngIf="!hideProgress">
-    <mat-progress-bar *ngIf="data.completionPercentage > 0" mode="determinate" [value]="data.completionPercentage" class="ui progress"></mat-progress-bar>
+  <div class="sb-card-progressbar">
+    <mat-progress-bar  mode="determinate" [value]="data.completionPercentage || 0" class="ui progress"></mat-progress-bar>
   </div>
   <!--/Progress Bar-->
 </div>

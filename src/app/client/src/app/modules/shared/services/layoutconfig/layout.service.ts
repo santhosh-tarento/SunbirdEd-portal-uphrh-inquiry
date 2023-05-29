@@ -12,7 +12,8 @@ export const COLUMN_TYPE = {
   twoToTen: [2, 10],
   fourToEight: [4, 8],
   fiveToSeven: [5, 7],
-  fullLayout: [12, 12]
+  fullLayout: [12, 12],
+  nineToThree: [9, 3],
 };
 
 @Injectable({
@@ -39,7 +40,7 @@ export class LayoutService {
     if (this.layoutConfig != null) {
       return this.layoutConfig;
     } else {
-      return this.configService.appConfig.layoutConfiguration;
+      return null;
     }
   }
 
@@ -100,9 +101,9 @@ export class LayoutService {
       localStorage.setItem('layoutType', 'default');
 
     } else {
-      this.layoutConfig = this.configService.appConfig.layoutConfiguration;
-      document.documentElement.setAttribute('layout', 'joy');
-      localStorage.setItem('layoutType', 'joy');
+      this.layoutConfig = null;
+      document.documentElement.setAttribute('layout', 'base');
+      localStorage.setItem('layoutType', 'default');
     }
     this.setLayoutConfig(this.layoutConfig);
   }

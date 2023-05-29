@@ -15,7 +15,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
-import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
+import { LibraryFiltersLayout } from 'uphrh-common-consumption';
 import { UserService } from '@sunbird/core';
 import { IFacetFilterFieldTemplateConfig } from '@project-sunbird/common-form-elements';
 import { CacheService } from 'ng2-cache-service';
@@ -98,7 +98,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           facet: f.name,
           type: 'dropdown',
           labelText: f.label || f.name,
-          placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+          placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label}`,
           multiple: true
         };
       });
@@ -160,7 +160,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
+          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'subject', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'additionalCategories'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
@@ -317,5 +317,6 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         });
       }
     });
+    console.log(this.facets,'qwer')
   }
 }

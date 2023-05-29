@@ -33,6 +33,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public pageSections: Array<any> = [];
     public channelId: string;
     public custodianOrg = true;
+    public showPreference = true;
     public defaultFilters;
     public userSelectedPreference;
     public selectedFilters = {};
@@ -223,6 +224,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.segmentationTagService.getSegmentCommand();
         const enrolledSection$ = this.getQueryParams().pipe(
             tap(() => {
+                console.log(this.getCurrentPageData(),this.getSelectedTab(),'asdfghjkl')
                 const currentPage = this._currentPageData = this.getCurrentPageData();
                 this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPage, 'title');
                 this.isFilterEnabled = true;
@@ -316,8 +318,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
                 this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
             } else {
-                this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+                if(contentType !== 'home' && contentType !== 'explore'){
+
+                    this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, {"source": "","name": "newLayout","options": "","layout":"v2"}, COLUMN_TYPE.nineToThree, true);
+                    this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, {"source": "","name": "newLayout","options": "","layout":"v2"}, COLUMN_TYPE.nineToThree, true);
+                } else {
+                    this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
                 this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+                }
             }
         }
     }
@@ -460,10 +468,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const params = _.get(this.activatedRoute, 'snapshot.queryParams');
                         _.filter(Object.keys(params),filterValue => { 
                             if (((_.get(currentPageData, 'metaData.filters').indexOf(filterValue) !== -1))) {
-                                if (params[filterValue].length === 1 && params[filterValue][0] === 'CBSE/NCERT') {
-                                    params[filterValue][0] = "CBSE";
+                                let param = {};
+                                param[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
+                                if (param[filterValue].length === 1 && param[filterValue][0] === 'CBSE/NCERT') {
+                                    param[filterValue][0] = "CBSE";
                                 }
-                                option.filters[filterValue] = (typeof (params[filterValue]) === "string") ? params[filterValue].split(',') : params[filterValue];
+                                option.filters[filterValue] = (typeof (param[filterValue]) === "string") ? param[filterValue].split(',') : param[filterValue];
                             }
                         });
                         if (this.userService.loggedIn) {

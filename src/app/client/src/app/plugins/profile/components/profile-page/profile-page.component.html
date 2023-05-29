@@ -4,10 +4,10 @@
   <div [ngClass]="layoutConfiguration ? 'sb-back-actionbar' : 'sb-bg-white cc-player__btn-back'" class="relative position mt-0" [ngClass]="{'header-block': isFullScreenView}">
     <div class="ui container py-0 px-0 d-flex flex-ai-center">
       <button type="button" (click)="goBack()" [ngClass]="layoutConfiguration ? 'sb-btn-primary sb-btn-round' : 'sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0'" class="sb-btn sb-btn-normal" tabindex="0" attr.aria-label="{{resourceService?.frmelmnts?.btn?.back}}">
-      <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-        </svg></i>
-     <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+      <i class="icon-svg icon-svg--xxs icon-back mr-4">
+          <img src="assets/images/arrow-back.png" alt="">
+      </i>
+     <span class="ml-8 back-btn-text">{{resourceService?.frmelmnts?.btn?.back}}</span>
     </button>
       <div class="content-header__content w-100 ml-16">
         <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
@@ -164,41 +164,64 @@
       </div>
   </section>
   
-  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 content-preference">
+  <section class="d-flex flex-ai-center mb-24 flex-dc profile-bg-c-4 content-preference">
     <!-- User info computer view starts-->
-    <div class="ui container">
+    <div class="sb-profile-page-container ui container profile-frac-section">
       <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
-        <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
-          </div>
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
-          </div>
-          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
-          </div>
-          <div class="d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>
-          </div>
-          <div class="d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.difficultyLevel)">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.difficultyLevel | transposeTerms: 'frmelmnts.lbl.difficultyLevel' : resourceService?.selectedLang}} :</span>
-            <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.difficultyLevel)}}</span>
-          </div>
-        </div>
-        <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
+        <div class="computer only">
+          <div class="d-flex flex-jc-space-between mb-24">
+            <h4>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</h4>
+            <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border computer only"
           appTelemetryInteract appOnlineOnly
           [telemetryInteractEdata]="myFrameworkEditEdata" attr.aria-label="{{resourceService.frmelmnts.lbl.edit}} {{resourceService.frmelmnts.lbl.boards}},{{resourceService.frmelmnts.lbl.medium}},{{resourceService.frmelmnts.lbl.classes}},{{convertToString(userProfile.framework.gradeLevel)}},{{resourceService.frmelmnts.lbl.subjects}}, {{resourceService.frmelmnts.lbl.difficultyLevel}}"
           (click)="showEdit = !showEdit" tabindex="0">{{resourceService.frmelmnts.lbl.edit}}</button>
+          </div>
+          <div class="mb-24 " *ngIf="convertToString(userProfile.framework.board)">
+            <div class="fmedium font-w-bold white-space-nowrap">{{resourceService.frmelmnts.lbl.boards | transposeTerms: 'frmelmnts.lbl.boards' : resourceService?.selectedLang}} :</div>
+            <div class="fmedium  mt-8  mb-8 fmedium-list"
+              *ngIf="userProfile.framework">
+              <ng-container *ngFor="let board of userProfile?.framework?.board;let i=index">
+                <span  class="preference-items mb-16 mr-16">{{board}}</span>
+              </ng-container>
+            </div>
+          </div>
+          <div class="mb-24" *ngIf="convertToString(userProfile.framework.medium)">
+            <div class="fmedium font-w-bold white-space-nowrap">{{resourceService.frmelmnts.lbl.medium | transposeTerms: 'frmelmnts.lbl.medium' : resourceService?.selectedLang}} :</div>
+              <div class="fmedium mt-8  mb-8 fmedium-list"
+              *ngIf="userProfile.framework">
+              <ng-container *ngFor="let medium of userProfile?.framework?.medium;let i=index">
+                <span  class="preference-items mb-16 mr-16">{{medium}}</span>
+              </ng-container>
+            </div>
+          </div>
+          <div class="mb-24" *ngIf="convertToString(userProfile.framework.gradeLevel)">
+            <div class="fmedium font-w-bold white-space-nowrap">{{resourceService.frmelmnts.lbl.classes | transposeTerms: 'frmelmnts.lbl.classes' : resourceService?.selectedLang}} :</div>
+              <div class="fmedium mt-8  mb-8 fmedium-list"
+              *ngIf="userProfile.framework">
+              <ng-container *ngFor="let gradeLevel of userProfile?.framework?.gradeLevel;let i=index">
+                <span  class="preference-items mb-16 mr-16">{{gradeLevel}}</span>
+              </ng-container>
+            </div>
+          </div>
+          <div class="mb-24" *ngIf="convertToString(userProfile.framework.subject)">
+            <div class="fmedium font-w-bold white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects | transposeTerms: 'frmelmnts.lbl.subjects' : resourceService?.selectedLang}} :</div>
+              <div class="fmedium mt-8 mb-8 fmedium-list"
+              *ngIf="userProfile.framework">
+              <ng-container *ngFor="let subject of userProfile?.framework?.subject;let i=index">
+                <span  class="preference-items mb-16 mr-16">{{subject}}</span>
+              </ng-container>
+            </div>
+          </div>
+          <div class="" *ngIf="convertToString(userProfile.framework.difficultyLevel)">
+            <div class="fmedium font-w-bold white-space-nowrap">{{resourceService.frmelmnts.lbl.difficultyLevel | transposeTerms: 'frmelmnts.lbl.difficultyLevel' : resourceService?.selectedLang}} :</div>
+              <div class="fmedium mt-8 mb-8 fmedium-list"
+              *ngIf="userProfile.framework">
+              <ng-container *ngFor="let difficultyLevel of userProfile?.framework?.difficultyLevel;let i=index">
+                <span  class="preference-items mb-16 mr-16">{{difficultyLevel}}</span>
+              </ng-container>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- User info computer view ends-->
@@ -235,51 +258,55 @@
   </section>
 
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
-    <div class="d-flex flex-dc">
-      <div class="d-flex flex-jc-center">
-        <div role="button" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
-          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
-          appTelemetryInteract
-          [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+    <div class="sb-profile-page-container ui container profile-frac-section">
+      <h4 class="mb-24">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</h4>
+      <div class="d-flex flex-jc-space-between">
+        <div class="d-flex flex-jc-center">
+          <div role="button" appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
+            class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
+            appTelemetryInteract
+            [telemetryInteractEdata]="editMobileInteractEdata">
+            <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+          </div>
+          <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addPhoneNo}}” tabindex="0"
+            class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
+            appTelemetryInteract
+            [telemetryInteractEdata]="editMobileInteractEdata">
+            <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+          </div>
         </div>
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addPhoneNo}}” tabindex="0"
-          class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
-          appTelemetryInteract
-          [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
-        </div>
+       <div class="d-flex flex-jc-center">
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
+        class="ui semi-circular dodger-blue basic label cursor-pointer mb-15" attr.aria-label=“{{userProfile.email}}” *ngIf="userProfile.email" appTelemetryInteract
+        [telemetryInteractEdata]="editEmailInteractEdata">
+        <i class="mail blue icon mr-5"></i> {{userProfile.email}}
       </div>
-     <div class="d-flex flex-jc-center">
-      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15" attr.aria-label=“{{userProfile.email}}” *ngIf="userProfile.email" appTelemetryInteract
-      [telemetryInteractEdata]="editEmailInteractEdata">
-      <i class="mail blue icon mr-5"></i> {{userProfile.email}}
-    </div>
-    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addEmailID}}”
-      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
-      appTelemetryInteract
-      [telemetryInteractEdata]="editEmailInteractEdata">
-      <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
-    </div>
-     </div>
-
-      <!-- Add/edit recovery email/phone-->
-    <div class="d-flex flex-jc-center">
-      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" attr.aria-label=“{{userProfile.recoveryEmail}}” class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
-      appTelemetryInteract
-      [telemetryInteractEdata]="editRecoveryIdInteractEdata">
-        <div class="recovery-img mr-5"></div>
-        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
-        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
+      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addEmailID}}”
+        class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
+        appTelemetryInteract
+        [telemetryInteractEdata]="editEmailInteractEdata">
+        <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
+      </div>
        </div>
-       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}” tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
-      appTelemetryInteract
-      [telemetryInteractEdata]="addRecoveryIdInteractEdata">
-        <div class="recovery-img mr-5"></div>
-       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
+  
+        <!-- Add/edit recovery email/phone-->
+      <div class="d-flex flex-jc-center">
+        <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" tabindex="0" (click)="showRecoveryId=true; mode='edit'" attr.aria-label=“{{userProfile.recoveryEmail}}” class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
+        appTelemetryInteract
+        [telemetryInteractEdata]="editRecoveryIdInteractEdata">
+          <div class="recovery-img mr-5"></div>
+          <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
+          <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
+         </div>
+         <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" attr.aria-label=“{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}” tabindex="0" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+        appTelemetryInteract
+        [telemetryInteractEdata]="addRecoveryIdInteractEdata">
+          <div class="recovery-img mr-5"></div>
+         <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
+         </div>
        </div>
-     </div>
+      </div>
+      
     </div>
   </section>
 

@@ -1,133 +1,84 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="false"></app-landing-section>
+
 <div class="sbt-fluid-content-bg">
+    <div class="landing-page-section mb-20 relative9 marquee-section">
+        <div class="ui container">
+            <div class="ui stackable p-16 mt-0">
+                <marquee behavior="scroll" direction="left">
+                    This place can be utilised for the announcements.
+                </marquee>
+            </div>
+        </div>
+    </div>
     <div class="landing-page-section mb-20 relative9">
         <div class="ui container">
             <div class="ui stackable grid pb-20 mt-0">
-                <div class="six wide column">
-                    <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
-                </div>
-                <!-- <div class="six wide column" *ngIf="!mainContent.length"> -->
-                <div class="six wide column">
-                    <!-- <p>In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal,
-                        an event which drew 1100 participants.</p> -->
-                    <p>
-                        The Hon’ble Chief Minister of Uttar Pradesh, Shri Yogi Adityanath, has envisioned the ambitious goal of turning UP into a hub of quality nursing and paramedical education in the state.
-                    </p>
-                    <!-- <p>The forum took stock of the fact that many countries were far from having reached the goals established at the
-                        World Conference on Education for All in 1990.</p> -->
-                    <p>
-                        In order to realize this vision, Mission Niramaya was formulated by UP State Medical Faculty, under the aegis of the Department of Medical Education, and was subsequently launched by the CM on 8th October 2022. A bouquet of reforms are envisioned under this Mission, which are going to be enabled through a population scale technological platform.
-                    </p>
-                    <br/>
-                    <!-- <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education
-                        for All by the year 2015, and identified six key measurable education goals which aim to meet the learning
-                        needs of all children, youth and adults by 2015.</p> -->
-                    <p>
-                        The aim of this platform is to bring most of its student and institute management processes online, and to turn SMF into a competency-focussed regulator of human resources in health.
-                    </p>
-                    <br/>
-                    <!-- <a href="#">Read More > </a> -->
+                <div class="six wide column d-flex align-items-center">
+                    <div >
+                        <p class="w-100 welcome-text">Welcome to Uttar Pradesh State Medical Faculty’s</p>
+                        <p class="w-100 mission-name">Mission Niramaya Portal</p>
+                        <p class="w-100 mission-details">The aim of this platform is to bring most of its student and institute management processes online, and to turn SMF into a competency-focussed regulator of human resources in health.</p>
+                    </div>
                 </div>
                 <!-- <div class="six wide column" *ngIf="mainContent.length > 0">
                     <p *ngFor="let content of mainContent">{{content.contentText}}</p>
                 </div> -->
+                    
+                <!-- <div class="six wide column" *ngIf="!mainContent.length"> -->
+                <div class="six wide column">
+                    <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
+                </div>
+
             </div>
         </div>
     </div>
-    
+    <div class="landing-page-section mb-20 relative9 landing-page-about-project ">
+        <div class="ui container">
+            <div class="ui stackable grid pt-32 pb-20 mt-0">
+                 <!-- <p>In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal,
+                        an event which drew 1100 participants.</p> -->
+                        <p>
+                            The Hon’ble Chief Minister of Uttar Pradesh, Shri Yogi Adityanath, has envisioned the ambitious goal of turning UP into a hub of quality nursing and paramedical education in the state.
+                        </p>
+                        <!-- <p>The forum took stock of the fact that many countries were far from having reached the goals established at the
+                            World Conference on Education for All in 1990.</p> -->
+                        <p>
+                            In order to realize this vision, Mission Niramaya was formulated by UP State Medical Faculty, under the aegis of the Department of Medical Education, and was subsequently launched by the CM on 8th October 2022. A bouquet of reforms are envisioned under this Mission, which are going to be enabled through a population scale technological platform.
+                        </p>
+                        <br/>
+                        <!-- <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education
+                            for All by the year 2015, and identified six key measurable education goals which aim to meet the learning
+                            needs of all children, youth and adults by 2015.</p> -->
+                        <p>
+                            The aim of this platform is to bring most of its student and institute management processes online, and to turn SMF into a competency-focussed regulator of human resources in health.
+                        </p>
+                        <br/>
+                        <!-- <a href="#">Read More > </a> -->
+            </div>
+        </div>
+    </div>
     <div class="ui container relative9">
-    <div class="ui stackable grid">
-        <div class="eight wide column ">
-            <div class="ui segment"  *ngIf="showUserArticle">
-                <div class="header p-10 segment-heading">
-                    <span>Featured Articles</span>
-                    <a href="#" class="right-floated">View All</a>
+        <div class="card-wrapper ">
+            <div class="link-cards">
+                <div class="link-card-details">
+                    <img _ngcontent-hwt-c36="" class="sb-icon-img sb-icon-img-sm" src="assets/images/learn.png">
+                    <p>Take a course</p>
                 </div>
-                <br>
-                <div class="ui two stackable cards">
-                    <div class="ui card">
-                        <div class="content card-opacity">
-                            <div class="description">
-                                <p>Enrollment info for life skill training Enrollment info for life skill training Enrollment info
-                                    for life skill training Enrollment info for life skill training Enrollment info for life
-                                    skill training Enrollment info for life skill training</p>
-                            </div>
-                        </div>
-                        <h4 class="article-header-padding">Enrollment info for life skill training</h4>
-                    </div>
-                    <div class="ui card">
-                        <div class="content card-opacity">
-                            <div class="description">
-                                <p>Polytechnics information june 2017 Polytechnics information june 2017 Polytechnics information
-                                    june 2017 Polytechnics information june 2017 Polytechnics information june 2017 Polytechnics
-                                    information june 2017</p>
-                            </div>
-                        </div>
-                        <h4 class="article-header-padding">Polytechnics information june 2017</h4>
-                    </div>
-                    <div class="ui card">
-                        <div class="content card-opacity">
-                            <div class="description">
-                                <p>Academic inspection formats Academic inspection formats Academic inspection formats Academic
-                                    inspection formats Academic inspection formats Academic inspection formats</p>
-                            </div>
-                        </div>
-                        <h4 class="article-header-padding">Academic inspection formats</h4>
-                    </div>
-                    <div class="ui card">
-                        <div class="content card-opacity">
-                            <div class="description">
-                                <p>ABC initiatives in practice ABC initiatives in practice ABC initiatives in practice ABC initiatives
-                                    in practice ABC initiatives in practice ABC initiatives in practice</p>
-                            </div>
-                        </div>
-                        <div class="article-header-padding">ABC initiatives in practice</div>
-                    </div>
+            </div>
+            <div class="link-cards">
+                <div class="link-card-details">
+                    <img _ngcontent-hwt-c36="" class="sb-icon-img sb-icon-img-sm" src="assets/images/exam.png">
+                    <p>Attend the exam</p>
+                </div>
+            </div>
+            <div class="link-cards">
+                <div class="link-card-details">
+                    <img _ngcontent-hwt-c36="" class="sb-icon-img sb-icon-img-sm" src="assets/images/graduate.png">
+                    <p>Get certified</p>
                 </div>
             </div>
         </div>
-        <div class="four wide column">
-            <div class="ui segment" *ngIf="showAnnoucements">
-                <div class="content">
-                    <div class="header segment-heading">
-                        <span>Announcements</span>
-                        <a class="right-float">View All</a>
-                    </div>
-                    <div class="description mt-10">
-                        <div class="ui relaxed divided list">
-                            <div class="item">
-                                <div class="content">
-                                    <a class="header text-decoration-underline">Exam Date Announced </a>
-                                    <br>
-                                    <div class="description">An excellent polish restaurant, quick delivery and hearty, filling meals.</div>
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="item">
-                                <div class="content">
-                                    <br/>
-                                    <a class="header text-decoration-underline">Exam Date Announced </a>
-                                    <br>
-                                    <div class="description">An excellent polish restaurant, quick delivery and hearty, filling meals.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="ui segment" *ngIf="showUserCalender">
-                <div class="content">
-                    <div class="header segment-heading">
-                        <span>Calendar</span>
-                        <a class="right-float">View All</a>
-                    </div>
-                </div>
-            </div>
-            <button type="button" onclick="openModal()" class="ui basic fluid button mt-5">ORGANIZATIONS</button>
-        </div>
-    </div>
     </div>
 </div>
 <router-outlet></router-outlet>

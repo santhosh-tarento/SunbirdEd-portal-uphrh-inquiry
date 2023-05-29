@@ -1,8 +1,8 @@
-<ng-container *ngIf="facets && layoutConfiguration">
+<ng-container *ngIf="facets && !layoutConfiguration">
   <div class="sbt-filter">
     <mat-accordion class="sb-mat-accordion sbt-filter-accordion">
       <mat-expansion-panel [expanded]="isOpen">
-        <mat-expansion-panel-header>
+        <!-- <mat-expansion-panel-header>
           <div class="sbt-filter-overlay"></div>
           <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
             <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
@@ -12,10 +12,14 @@
             <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
             <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
           </div>
-        </mat-expansion-panel-header>
+        </mat-expansion-panel-header> -->
         <ng-container>
-          <div class="sbt-filter-bar mr-16 pl-24">
+          <div class="sbt-filter-bar  pl-24">
             <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
+              <div>
+                <div class="fsmall font-weight-bold my-8 text-left filter-pref-text" tabindex="0">
+                  {{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+              </div>
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
                 (click)="onSearchFacetFilterReset()" tabindex="0" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset |
@@ -28,9 +32,7 @@
                 </i>
               </span>
             </div>
-            <div class="sbt-filter-scrollable pr-24">
-              <div class="fsmall my-8 text-left filter-pref-text" tabindex="0">
-                {{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+            <div class="sbt-filter-scrollable">
               <sb-search-facet-filter *ngIf="filterFormTemplateConfig"
                 [supportedFilterAttributes]="supportedFilterAttributes" [searchResultFacets]="facets"
                 [filterFormTemplateConfig]="filterFormTemplateConfig"
@@ -44,7 +46,7 @@
     </mat-accordion>
   </div>
 </ng-container>
-<ng-container *ngIf="facets && !layoutConfiguration">
+<ng-container *ngIf="facets && layoutConfiguration">
   <div class="sb-prominent-filter p-0 mt-8">
     <div class="ui container">
       <mat-accordion>

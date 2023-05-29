@@ -78,7 +78,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getBaseUrl();
     }
 
-    this.instance = _.upperCase(this.resourceService.instance);
+    this.instance = _.upperCase('NIRAMAYA');
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
     });

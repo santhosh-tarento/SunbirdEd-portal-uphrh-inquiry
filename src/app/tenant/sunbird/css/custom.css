@@ -539,6 +539,9 @@ address{margin:0;}
 	.playlist-cover {
 		height:360px;
 	}
+.container {
+    width: 130.25rem !important;
+}
 }
 /*Above 1280px*/
 @media screen and (min-width: 1280px){

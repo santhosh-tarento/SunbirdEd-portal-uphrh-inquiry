@@ -80,3 +80,7 @@
   position: absolute;
   right: -.625rem;
 }
+.ui.menu.text .item.active {
+  font-weight: bold;
+  color: var(--primary-theme) !important;
+}

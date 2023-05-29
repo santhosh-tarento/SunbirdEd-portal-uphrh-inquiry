@@ -42,7 +42,7 @@
         </div>
 
         <!-- Course details displayed on top when course is not enrolled -->
-        <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
+        <!-- <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details> -->
 
         <div class="training-modules my-16">
           <div class="training-modules__title d-flex flex-ai-center mb-16">
@@ -124,11 +124,13 @@
         </div>
 
         <!-- Course details displayed on bottom when course is enrolled -->
-        <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="enrolledCourse"></app-course-details>
+        <!-- <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="enrolledCourse"></app-course-details> -->
 
       </div>
       <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
-
+        <!-- <app-course-consumption-header 
+        [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId" [showMenu]="false"
+        [showAddGroup]="showAddGroup" [layoutConfiguration]="layoutConfiguration"></app-course-consumption-header> -->
         <!-- <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledBatchInfo?.cert_templates; else noCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
