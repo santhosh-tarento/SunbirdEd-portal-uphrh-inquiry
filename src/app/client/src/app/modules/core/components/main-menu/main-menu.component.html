@@ -22,7 +22,6 @@
 	</ng-container>
 	<!--/Logged in user-->
 
-	
 	<!--Not Logged in user-->
 	<ng-container *ngIf="!userService.loggedIn">
 		<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
