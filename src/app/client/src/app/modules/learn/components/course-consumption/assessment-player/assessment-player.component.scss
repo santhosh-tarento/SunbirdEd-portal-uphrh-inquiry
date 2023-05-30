@@ -85,7 +85,9 @@
       }
   }
 }
-
+::ng-deep .sbchapter__img {
+ display: none !important;
+}
 .header-block {
   display: none;
 }

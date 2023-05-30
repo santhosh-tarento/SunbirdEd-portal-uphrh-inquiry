@@ -65,7 +65,7 @@
         </div>
         <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
           <div class="d-flex flex-w-wrap flex-ai-center textbook sb-course-details__information cc-player ml-auto">
-           <div class="d-flex w-100 flex-ai-center">
+           <div class="w-100 ">
              <!-- join course, start learning, continue learning, view dashboard buttons -->
              <div class="sb-course-btn-container" *ngIf="!showAddGroup && isTrackable">
               <div class="certified-course__btn " *ngIf="!enrolledCourse && !viewDashboard">
@@ -109,23 +109,23 @@
                 </button>
               </div>
             </div>
-            <div class="sb-share-container">
-              <button tabindex="0" (click)="onShareLink();sharelinkModal=true;"
-              class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
-              <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
-                  <use xlink:href="assets/images/sprite.svg#share"></use>
-                </svg></i>
-              {{resourceService?.frmelmnts?.lbl?.share}}
-            </button>
-            </div>
            </div>
+           <div class="w-100 mt-16 mb-16">
+            <button tabindex="0" (click)="onShareLink();sharelinkModal=true;"
+            class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex w-100 flex-ai-jc-center flex-ai-center">
+            <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#share"></use>
+              </svg></i>
+            {{resourceService?.frmelmnts?.lbl?.share}}
+          </button>
+          </div>
            <!-- course rating -->
            <div class="w-100 mt-8 mb-8">
             <div class="sb-rating-label mb-8" for="">Course rating</div>
              <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star huge" [isReadonly]="true"
           [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
            </div>
-            <div class="batch-details__created mt-8 fsmall mx-8"
+            <div class="batch-details__created mt-8 fsmall"
               *ngIf="!enrolledBatchInfo && isValidEnrollmentEndDate(enrollmentEndDate)">
               <span class="sb-label-12size"
                 *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}

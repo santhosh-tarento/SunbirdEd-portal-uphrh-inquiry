@@ -680,7 +680,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
     this.tenantService.tenantData$.subscribe(({ tenantData }) => {
-      this.tenantInfo.logo = tenantData ? 'https://uphrh.in/assets/images/sunbird_logo.png' : undefined;
+      this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
     });
     this.setInteractEventData();
