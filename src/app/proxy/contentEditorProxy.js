@@ -168,7 +168,8 @@ module.exports = function (app) {
     '/action/questionset/v1/reject/:do_id',
     '/action/question/v1/create',
     '/action/question/v1/review/:do_id',
-    '/action/question/v1/publish/:do_id'
+    '/action/question/v1/publish/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id'
     ],
     isAPIWhitelisted.isAllowed(),
     addCorsHeaders,

@@ -238,7 +238,7 @@ export class PlayerService {
     }
   }
 
-  public getQuestionSetHierarchyByPost(req){
-    return this.http.post('/learner/questionset/v1/hierarchy', req);
+  public getQuestionSetHierarchyByPost(req,id){
+    return this.http.post('/action/questionset/v1/hierarchy'+id, req);
   }
 }

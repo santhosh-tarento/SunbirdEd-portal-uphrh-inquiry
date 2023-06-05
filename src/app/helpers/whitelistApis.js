@@ -724,6 +724,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/questionset/v1/hierarchy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
 
     // Groups related APIs
     '/learner/group/v1/create': {
@@ -2071,7 +2075,8 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
     '/kendra/user-extension/mlcore/v1/solutions/:id',
-    '/api/questionset/v1/retire/:QuestionSet_Id'
+    '/api/questionset/v1/retire/:QuestionSet_Id',
+    '/action/questionset/v1/hierarchy/:do_id'
   ]
 };
 module.exports = API_LIST;
