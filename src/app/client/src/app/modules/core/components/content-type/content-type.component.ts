@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TelemetryService } from '@sunbird/telemetry';
+import { PermissionService } from '../../services';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   subscription: any;
   userType: any;
+  userRoles:any[] = [];
   returnTo: string;
   constructor(
     public formService: FormService,
@@ -34,6 +36,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
     public navigationhelperService: NavigationHelperService,
+    public permissionService: PermissionService
   ) {}
 
 
@@ -94,11 +97,10 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
-    if (data.contentType === 'mydownloads' || data.contentType === 'all') {
+    // All, myDownloads, workspace, resultEvaluation Tab should not carry any filters from other tabs / user can apply fresh filters
+    if (data.contentType === 'mydownloads' || data.contentType === 'all' || data.contentType === 'workspace'  || data.contentType ===  'resultEvaluation') {
       params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
     }
-
     if (this.userService.loggedIn) {
       this.router.navigate([data.loggedInUserRoute.route],
         { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
@@ -140,11 +142,13 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       if (this.userService.loggedIn) {
         this.userService.userData$.pipe(takeUntil(this.unsubscribe$)).subscribe((profileData: IUserData) => {
           if (_.get(profileData, 'userProfile.profileUserType.type')) {
-          this.userType = profileData.userProfile['profileUserType']['type'];
+            this.userType = profileData.userProfile['profileUserType']['type'];
           }
+
+          this.userRoles = profileData.userProfile['roles'].length ? _.map(profileData.userProfile['roles'], 'role') : []; 
           this.makeFormChange();
         });
-      } else {
+      } else {  
         const user = localStorage.getItem('userType');
         if (user) {
           this.userType = user;
@@ -160,11 +164,45 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
   makeFormChange() {
     const index = this.contentTypes.findIndex(cty => cty.contentType === 'observation');
-    if (this.userType != 'administrator') {
+    const piaaIndex = this.contentTypes.findIndex(cty => cty.contentType === 'piaaAssessment');
+    const workspaceIndex = this.contentTypes.findIndex(cty => cty.contentType === 'workspace');
+    const resultEvaluationIndex = this.contentTypes.findIndex(cty => cty.contentType === 'resultEvaluation');
+
+    if (this.userType != 'administrator' && index !== -1) {
       this.contentTypes[index].isEnabled = false;
-    } else {
-      this.contentTypes[index].isEnabled = true;
     }
+    else {
+      if (this.contentTypes[index]) {
+        this.contentTypes[index].isEnabled = true;
+      }
+    }
+
+    if( (!_.isEmpty(this.userRoles) &&  !_.includes(this.userRoles, 'PUBLIC') &&  !_.includes(this.userRoles, 'CONTENT_CREATOR') )  && piaaIndex !== -1){
+      this.contentTypes[piaaIndex].isEnabled = false;
+    }
+
+    if( ((!_.isEmpty(this.userRoles) &&  (!_.includes(this.userRoles, 'NODAL_OFFICER') && !_.includes(this.userRoles, 'PIAA_SETTER')) ) || _.isEmpty(this.userRoles)) && workspaceIndex !== -1){
+      this.contentTypes[workspaceIndex].isEnabled = false
+    }
+
+    if( ((!_.isEmpty(this.userRoles) &&  !_.includes(this.userRoles, 'ORG_ADMIN') ) || _.isEmpty(this.userRoles)) && resultEvaluationIndex !== -1){
+      this.contentTypes[resultEvaluationIndex].isEnabled = false;
+    } 
+
+    if( (!_.isEmpty(this.userRoles) &&  _.includes(this.userRoles, 'PIAA_SETTER')  ) && workspaceIndex !== -1){
+      this.contentTypes[workspaceIndex].loggedInUserRoute.route = 'workspace/content/create';
+      this.contentTypes[workspaceIndex].loggedInUserRoute.queryParam = 'workspace/content/create';
+    }
+
+
+    if(!this.userService.loggedIn) {
+      _.forEach(this.contentTypes, (contentType) => {
+        if(contentType?.hideForGuestUser) {
+          contentType.isEnabled = false;
+        }
+      });  
+    }
+    
   }
 
   processFormData(formData) {

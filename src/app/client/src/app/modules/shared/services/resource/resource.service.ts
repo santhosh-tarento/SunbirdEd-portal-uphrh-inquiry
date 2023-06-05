@@ -52,6 +52,10 @@ export class ResourceService {
   _languageSelected = new BehaviorSubject<any>({});
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
+  //Observable frmelmnts bundle source
+  private _frmelmnts= new BehaviorSubject<any>({});
+  //Observable frmelmnts bundle stream
+  frmelmnts$ = this._frmelmnts.asObservable();
 
   public RESOURCE_CONSUMPTION_ROOT = 'result.consumption.';
 
@@ -95,6 +99,7 @@ export class ResourceService {
             frmelemnts: consumptionFrmelemnts = {}, tbk = {}, tvc = {}, tvk = {}, crs = {} } = {} } = _.get(data, 'result') || {};
         this.messages = _.merge({}, creationMessages, consumptionMessages);
         this.frmelmnts = _.merge({}, creationFrmelmnts, consumptionFrmelmnts);
+        this._frmelmnts.next(this.frmelmnts);
         this.frmelemnts = _.merge({}, creationFrmelemnts, consumptionFrmelemnts);
         this.tbk = tbk; this.tvc = tvc; this.tvk = tvk; this.crs = crs;
         this.getLanguageChange(range);

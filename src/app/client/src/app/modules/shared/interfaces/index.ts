@@ -21,6 +21,7 @@ export * from './telemetryShare';
 export * from './batch';
 export * from './highlightText';
 export * from './language';
+export * from './scoreDetails';
 export interface IPagination {
     totalItems: number;
     currentPage: number;

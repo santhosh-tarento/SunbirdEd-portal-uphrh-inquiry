@@ -5,7 +5,7 @@ import { NoResultComponent, SearchFilterComponent, PageSectionComponent,
 import { SharedModule } from '@sunbird/shared';
 import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
-  SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
+  SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SuiDatepickerModule
 } from 'ng2-semantic-ui-v9';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -32,7 +32,7 @@ import { SbSearchFilterModule } from '@project-sunbird/common-form-elements';
         SharedModule,
         TranslateModule,
         SuiModalModule, SuiProgressModule, SuiAccordionModule,
-        SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SbSearchFilterModule,
+        SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SbSearchFilterModule,SuiDatepickerModule,
     ],
   exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent,
     TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent]

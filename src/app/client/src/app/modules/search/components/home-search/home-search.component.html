@@ -31,8 +31,7 @@
         </div>
     </div>
     <div class="twelve wide column">
-      <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
-              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
+      <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters" [showLoader]="showLoader" *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="handleFilterChange($event)"></app-global-search-selected-filter>
       <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList?.length"
         class="dynamic-section-card">
         <ng-container>

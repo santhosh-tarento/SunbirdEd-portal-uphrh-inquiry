@@ -157,7 +157,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
     this.resourceService = resourceService;
     this.config = config;
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0032,
+      'loaderMessage': this.resourceService?.messages?.stmsg?.m0032,
     };
     this.state = 'upForReview';
     this.permissionService = permissionService;

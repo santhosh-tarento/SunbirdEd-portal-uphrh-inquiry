@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit,Input, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit,Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { ResourceService, UtilService, ConfigService } from '@sunbird/shared';
 import { Observable } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -12,7 +12,7 @@ import * as _ from 'lodash-es';
   templateUrl: './signup-basic-info.component.html',
   styleUrls: ['./signup-basic-info.component.scss' , '../signup/signup_form.component.scss']
 })
-export class SignupBasicInfoComponent implements OnInit {
+export class SignupBasicInfoComponent implements OnInit, OnChanges {
 
   @Output() subformInitialized: EventEmitter<{}> = new EventEmitter<{}>();
   @Output() triggerIsMinor: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -23,8 +23,9 @@ export class SignupBasicInfoComponent implements OnInit {
   @Input() submitInteractEdata;
   @Input() telemetryCdata;
   @Input() routeParams;
+  @Input() registerFormConfig;
   birthYearOptions: Array<string> = [];
-  filteredYOB: Observable<number[]>;
+  filteredYOB: Observable<string[]>;
   yearOfBirth: string;
   isMinor: boolean;
   @Input() startingForm: object;
@@ -36,9 +37,32 @@ export class SignupBasicInfoComponent implements OnInit {
   
 
   ngOnInit(): void {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.initializeForm();
+    this.initiateYearSelecter();
+    // @ts-ignore
+    this.getFilteredYOB();
+    // console.log('Global Object data => ', this.startingForm); // TODO: log!
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.registerFormConfig?.currentValue?.ageAboveEighteen) {
+      let endYear = new Date().getFullYear() - this.configService.constants.SIGN_UP.MINIMUN_AGE;
+      const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
+      if (!this.personalInfoForm) {
+        this.initializeForm();
+      }
+      this.personalInfoForm?.get('yearOfBirth')?.setValidators([Validators.min(startYear), Validators.max(endYear)]);
+      this.personalInfoForm?.updateValueAndValidity();
+      this.initiateYearSelecter();
+      this.getFilteredYOB();
+    }
+  }
+
+  initializeForm(): void {
     const endYear = new Date().getFullYear();
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
-    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+
     this.personalInfoForm = this._fb.group({
       name: ['', Validators.required],
       yearOfBirth: ['', [Validators.required, 
@@ -46,14 +70,14 @@ export class SignupBasicInfoComponent implements OnInit {
         Validators.min(startYear),
         Validators.max(endYear), 
       ]]
-    })
-    this.initiateYearSelecter();
-    // @ts-ignore
+    });
+  }
+
+  getFilteredYOB(): void {
     this.filteredYOB = this.personalInfoForm.controls.yearOfBirth.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value)),
     );
-    // console.log('Global Object data => ', this.startingForm); // TODO: log!
   }
 
   private _filter(value: string): string[] {
@@ -92,8 +116,9 @@ export class SignupBasicInfoComponent implements OnInit {
     }
   }
 
-  initiateYearSelecter() {
-    const endYear = new Date().getFullYear();
+  initiateYearSelecter(newEndYear?: number) {
+    this.birthYearOptions = [];
+    let endYear = (this.registerFormConfig?.ageAboveEighteen) ? (new Date().getFullYear() - this.configService.constants.SIGN_UP.MINIMUN_AGE) : new Date().getFullYear();
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
     for (let year = endYear; year > startYear; year--) {
       this.birthYearOptions.push(year.toString());

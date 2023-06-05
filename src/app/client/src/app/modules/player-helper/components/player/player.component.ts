@@ -6,14 +6,14 @@ import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
-import { ContentService } from '@sunbird/core';
+import { ContentService, SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
@@ -67,6 +67,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   showQumlPlayer = false;
   contentId: string;
   collectionId:string;
+  /**
+   * To call searchService 
+   */
+  private searchService: SearchService;
+
 
   /**
  * Dom element reference of contentRatingModal
@@ -82,13 +87,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
     , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
-    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService) {
+    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService,
+    searchService: SearchService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
     this.isCdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
       ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+    this.searchService = searchService;
   }
 
   @HostListener('window:orientationchange', ['$event'])
@@ -168,7 +175,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      this.loadPlayer();
+      if(this.contentUtilsServiceService.isQuestionSetBP(this.playerConfig.metadata)) {
+        this.updateMetaDataUsingBP();
+      }  else{
+         this.loadPlayer();
+      }
+      
     }
   }
   loadCdnPlayer() {
@@ -251,6 +263,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   checkForQumlPlayer() {
+    /*Check if Question Set blueprint exists and questions are not fetched yet- return back */
+    if(this.playerConfig.metadata && this.contentUtilsServiceService.isQuestionSetBP(this.playerConfig.metadata) && (this.playerConfig.metadata.children.length === this.playerConfig.metadata.childNodes.length)) {
+      return null;
+    }
     if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
       this.playerConfig.config.sideMenu.showDownload = false;
       if (!_.get(this.playerConfig, 'metadata.instructions')) {
@@ -405,6 +421,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
       this.mobileViewDisplay = 'none';
     }
+    if(_.get(event, 'edata.type') === 'EXIT')  {
+       this.assessmentEvents.emit(event);
+     }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
@@ -568,6 +587,75 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         lastName: ''
       };
     }
+  }
+  /*
+    Method to fetch questions using criterias and update each section's children with questions 
+  */
+  updateMetaDataUsingBP() {
+    let metadata = {...this.playerConfig.metadata};
+      let sectionQuestionsRequests =  [];
+      let sectionQuestions=[];
+      let questionResponseStartIndex = 0;
+      _.forEach(metadata.children, (section) => {
+        if(section.children.length === 0 && section.criterias && section.criterias.length > 0) {
+          _.forEach(section.criterias, (criteria) => {
+            if(criteria?.board && criteria?.medium && criteria?.gradeLevel && criteria?.subject){
+              let searchParams= this.contentUtilsServiceService.getCompositeSearchParams(criteria);
+              if(criteria?.difficultyLevel) {
+                searchParams.filters['difficultyLevel'] = section?.difficultyLevel;
+              }
+              sectionQuestionsRequests.push(this.searchService.compositeSearch(searchParams));
+            }    
+          });
+          sectionQuestions.push({identifier: section.identifier, questionResponseStartIndex: questionResponseStartIndex});
+          questionResponseStartIndex = questionResponseStartIndex + section.criterias.length;
+        } else if(section.children.length === 0 && (section?.board && section?.medium && section?.gradeLevel && section?.subject)) { 
+          let searchParams= this.contentUtilsServiceService.getCompositeSearchParams(section);
+              if(section?.difficultyLevel) {
+                searchParams.filters['difficultyLevel'] = section?.difficultyLevel;
+              }
+              sectionQuestionsRequests.push(this.searchService.compositeSearch(searchParams));
+              sectionQuestions.push({identifier: section.identifier, questionResponseStartIndex: questionResponseStartIndex});
+              questionResponseStartIndex = questionResponseStartIndex + 1;
+        }
+      });
+      console.log("Dynamic Question Set DatA-------->");
+      console.log("sectionQuestions-------->", sectionQuestions);
+
+
+      if(sectionQuestionsRequests.length > 0) {
+        forkJoin(sectionQuestionsRequests).subscribe((sectionQuestionsRes) => {
+          let childNodes= [...metadata.childNodes];
+          _.forEach(metadata.children, (section) => {
+            console.log(`-----------Section ${section.identifier} start----------`);
+            const sectionQuestion = _.find(sectionQuestions, {identifier: section.identifier});
+            let questions = [];
+            const criteriasCount = section.criterias ? section.criterias.length : 1;
+            const endIndex= sectionQuestion.questionResponseStartIndex +  criteriasCount;
+            console.log("sectionQuestionsRes-------->", sectionQuestionsRes);
+            console.log("sectionQuestion-------->", sectionQuestion);
+            console.log("start index-------->", sectionQuestion.questionResponseStartIndex);
+            console.log("end index-------->", endIndex);
+            for(let index= sectionQuestion.questionResponseStartIndex; index < endIndex; index++) {
+              questions = _.concat(questions, sectionQuestionsRes[index]['result'].Question);
+            }
+            console.log("questions in section-------->", questions);
+            section.children = questions;
+            childNodes = _.concat(childNodes, _.map(section.children, 'identifier'));
+            console.log(`-----------Section ${section.identifier} end----------`);
+          });
+          // Updating parent childNodes with all questions identifire
+          metadata.childNodes= [...childNodes]; 
+          console.log("new Metadata-------->", metadata);
+          this.playerConfig.metadata= metadata;
+          this.loadPlayer();
+        }, (error) => {
+          console.log("Error in  fetching questions from criteria");
+          this.loadPlayer();
+        })
+      } else {
+        this.loadPlayer();
+      }
   }
 
   ngOnDestroy() {

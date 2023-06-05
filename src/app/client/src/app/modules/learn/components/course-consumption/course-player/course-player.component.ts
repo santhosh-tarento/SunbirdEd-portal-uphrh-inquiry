@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption'
-import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
+import { CoursesService, PermissionService, UserService, GeneraliseLabelService, FormService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
   ResourceService, ToasterService, WindowScrollService, ITelemetryShare, LayoutService
@@ -94,6 +94,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   isConnected = false;
   dropdownContent = true;
   showForceSync = true;
+  isPrimaryCategoryType:boolean;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -116,6 +118,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
     private connectionService: ConnectionService,
+    private formService: FormService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
     @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
   ) {
@@ -130,9 +133,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       this.courseMentor = false;
     }
     this.connectionService.monitor()
-    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
+      .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
 
     // Set consetnt pop up configuration here
     this.consentConfig = {
@@ -176,12 +179,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       });
 
     this.activatedRoute.queryParams
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe(response => {
-      this.addToGroup = Boolean(response.groupId);
-      this.groupId = _.get(response, 'groupId');
-      this.tocId = response.textbook || undefined;
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(response => {
+        this.addToGroup = Boolean(response.groupId);
+        this.groupId = _.get(response, 'groupId');
+        this.tocId = response.textbook || undefined;
+      });
 
     this.courseConsumptionService.updateContentState
       .pipe(takeUntil(this.unsubscribe))
@@ -263,9 +266,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }, 1000);
     });
     const isForceSynced = localStorage.getItem(this.courseId + '_isforce-sync');
-        if (isForceSynced) {
-          this.showForceSync = false;
-        }
+    if (isForceSynced) {
+      this.showForceSync = false;
+    }
   }
 
   /**
@@ -302,11 +305,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-   });
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
 
   private parseChildContent() {
@@ -341,7 +344,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
-        this.contentStatus = _parsedResponse.content || [];
+        this.isPrimaryCategoryType = (_.get(this.courseHierarchy, 'primaryCategory')) === 'PIAA Assessment';
+        if(!this.isPrimaryCategoryType){
+          this.contentStatus = _parsedResponse.content || [];
+        }
         this._routerStateContentStatus = _parsedResponse;
         this.calculateProgress();
       }, error => {
@@ -378,7 +384,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
     /* istanbul ignore else */
     setTimeout(() => {
-        if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
+      if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
         this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
       }
     }, 100);
@@ -389,7 +395,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (this.batchId) {
       this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
     }
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       this.telemetryCdata.push({
         id: this.groupId,
         type: 'Group'
@@ -444,7 +450,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private setTelemetryCourseImpression() {
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       this.telemetryCdata.push({
         id: this.groupId,
         type: 'Group'
@@ -532,7 +538,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const allBatchList = _.filter(_.get(this.courseHierarchy, 'batches'), (batch) => {
           return !this.isEnrollmentAllowed(_.get(batch, 'enrollmentEndDate'));
         });
-         this.batchMessage = this.validateBatchDate(allBatchList);
+        this.batchMessage = this.validateBatchDate(allBatchList);
       }
     }
   }
@@ -622,7 +628,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       interactData.context.cdata.push({
         id: this.groupId,
         type: 'Group'
@@ -670,7 +676,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       }
     };
 
-    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+    if (this.groupId && !_.find(this.telemetryCdata, { id: this.groupId })) {
       interactData.context.cdata.push({
         id: this.groupId,
         type: 'Group'
@@ -721,11 +727,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       'userId': _.get(this.userService, 'userid')
     };
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
-    .pipe(takeUntil(this.unsubscribe))
-    .subscribe((res) => {
-      this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
-    }, error => {
-      console.log('Content state update CSL API failed ', error);
-    });
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
+      }, error => {
+        console.log('Content state update CSL API failed ', error);
+      });
   }
 }

@@ -92,7 +92,7 @@
                   </span>
                 </p>
               </div>
-              <button
+              <button matTooltip="update your preferences to explore courses and assessments" matTooltipPosition="above"
                 class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
             </div>
           </div>
@@ -255,7 +255,7 @@
 <app-modal-wrapper *ngIf="showEdit" [config]="{disableClose: false, panelClass: ['overflow-visible', 'material-modal']}">
   <ng-template sbModalContent let-data>
     <app-popup [dialogProps]="data" [formInput]="userPreference?.framework" [showCloseIcon]="true"
-      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
+      [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="!isUserLoggedIn()"
       (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
     </app-popup>
   </ng-template>

@@ -9,7 +9,8 @@ import {
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
   OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent, SbDatatableComponent,
-  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective
+  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
+  ScoreDetailsComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -70,7 +71,7 @@ import { MaterialModule } from './modules/material/material.module';
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent, OnDemandReportsComponent, SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
     TelemetryEventsDirective, DesktopAppUpdateComponent, AlertModalComponent, SystemWarningComponent, FullPageLoaderComponent, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe
+    AutocompletePipe, MaterialAutoCompleteComponent, TransposeTermsPipe, ScoreDetailsComponent
   ],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
@@ -81,7 +82,7 @@ import { MaterialModule } from './modules/material/material.module';
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule, SbDataTablePipe,
     InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective,
     AlertModalComponent, FullPageLoaderComponent, MatTooltipModule, MatTabsModule, MatDialogModule, ModalWrapperComponent, ModalContentDirective,
-    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe
+    AutocompletePipe, MaterialAutoCompleteComponent, MaterialModule, TransposeTermsPipe, ScoreDetailsComponent
   ],
   entryComponents: [AlertModalComponent]
 })

@@ -1,7 +1,6 @@
-<div class="sbt-applied-filters-titlefle text-left mt-24" *ngIf="showLabel()">
-  {{ resourceService?.frmelmnts?.lbl?.appliedFilters}}</div>
-<div *ngIf="showLabel()" class="d-flex flex-ai-center mb-24 flex-w-wrap">
+<div class="sbt-applied-filters-titlefle text-left mt-24" *ngIf="showLabel()">{{ resourceService?.frmelmnts?.lbl?.appliedFilters }}</div>
 
+<div *ngIf="showLabel()" class="d-flex flex-ai-center mb-24 flex-w-wrap">
   <ng-container *ngFor="let facet of facets | sortBy:'index':'asc'">
     <div class="d-flex flex-ai-center pr-8">
       <div *ngIf="selectedFilters[facet.name] && selectedFilters[facet.name].length > 0">
@@ -14,5 +13,11 @@
         </ng-container>
       </div>
     </div>
-    </ng-container>
-    </div>
+  </ng-container>
+</div>
+
+<div *ngIf="noResult && !showLoader" class="text-center">
+  <h2 class="sb-color-primary">No results found</h2>
+  <div class="fsmall">We couldn't able to find what you have searched for.</div>
+  <div class="fsmall">Try searching again.</div>
+</div>

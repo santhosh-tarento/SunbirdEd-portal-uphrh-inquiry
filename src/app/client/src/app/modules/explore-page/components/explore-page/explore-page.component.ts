@@ -185,7 +185,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         });
                     }
                     this._addFiltersInTheQueryParams();
-                    return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
+                    //Setting custodian org false always to load correct framework categories in search filter component for all self registered users (students)
+                    return this.contentSearchService.initialize(this.channelId, false, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
                     this.initFilter = true;

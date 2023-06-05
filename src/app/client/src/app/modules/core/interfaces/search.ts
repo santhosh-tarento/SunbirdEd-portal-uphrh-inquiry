@@ -72,14 +72,19 @@ export interface SearchParam {
   /**
     * facet filters
   */
- facets?: Array<string>;
- exists?: Array<string>;
+  facets?: Array<string>;
+  exists?: Array<string>;
   /**
      * mode : soft
      */
- mode?: string;
+  mode?: string;
 
- fields?: string[];
- locationIds?: string[];
- isRootOrg?: boolean;
+  fields?: string[];
+  locationIds?: string[];
+  isRootOrg?: boolean;
+
+  /**
+   * Type 
+   */
+  type?: string;
 }

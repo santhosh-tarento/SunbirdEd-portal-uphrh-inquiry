@@ -199,7 +199,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
-        if (_.lowerCase(this.contentType) === 'questionset') {
+        if (_.lowerCase(this.contentType) === 'questionset' || _.lowerCase(this.contentType) === 'questionsetblueprint') {
           const reqData = this.generateQuestionSetData();
           this.workSpaceService.createQuestionSet(reqData).subscribe(res => {
             // tslint:disable-next-line:max-line-length
@@ -594,7 +594,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         'questionset': {
           name: 'Untitled QuestionSet',
           mimeType: 'application/vnd.sunbird.questionset',
-          primaryCategory: 'Practice Question Set',
+          primaryCategory: _.lowerCase(this.contentType) === 'questionset' ? 'Practice Question Set' : 'Blueprint Question Set',
           createdBy: this.userService.userProfile.id,
           // organisation: _.uniq(this.userService.orgNames),
           createdFor: this.userService?.userProfile?.rootOrgId ? [this.userService?.userProfile?.rootOrgId] : [],

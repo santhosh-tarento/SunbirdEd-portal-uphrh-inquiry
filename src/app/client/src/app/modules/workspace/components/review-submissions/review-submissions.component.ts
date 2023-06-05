@@ -147,7 +147,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
     this.toasterService = toasterService;
     this.state = 'review';
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0018,
+      'loaderMessage': this.resourceService?.messages?.stmsg?.m0018,
     };
   }
 

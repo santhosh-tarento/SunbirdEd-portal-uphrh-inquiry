@@ -298,6 +298,17 @@
       }
     }
   }
+  .verified{
+    .asteriks {
+      color: var(--red-400);
+    }
+  }
+  .rules{
+    .asterik {
+      color: var(--red-400);
+    }
+  }
+  
 }
 
 ::ng-deep {

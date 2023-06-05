@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, UtilService } from '@sunbird/shared';
@@ -10,12 +10,14 @@ import { Subject } from 'rxjs/internal/Subject';
   templateUrl: './global-search-selected-filter.component.html',
   styleUrls: ['./global-search-selected-filter.component.scss']
 })
-export class GlobalSearchSelectedFilterComponent implements OnInit {
+export class GlobalSearchSelectedFilterComponent implements OnInit, OnChanges {
   @Input() facets: { name: string, label: string, index: string, placeholder: string, values: { name: string, count?: number }[] }[];
   @Input() selectedFilters;
   @Input() queryParamsToOmit;
+  @Input() showLoader: boolean = false;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   private unsubscribe$ = new Subject<void>();
+  noResult: boolean = false;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, public resourceService: ResourceService, private utilService: UtilService) { }
 
@@ -27,6 +29,33 @@ export class GlobalSearchSelectedFilterComponent implements OnInit {
         });
       }
     });
+
+    this.checkFacetsValues(this.facets);
+    // To show the no-result msg
+    // let lengthOfArray = 0;
+    // this.facets.forEach((obj) => {
+    //   lengthOfArray += obj.values.length;
+    // });
+
+    // if (!lengthOfArray) {
+    //   this.noResult = true;
+    // }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.checkFacetsValues(changes?.facets?.currentValue);
+  }
+
+  checkFacetsValues(facets: Object[]) {
+    // To show the no-result msg
+    if (!facets?.length) return;
+
+    let lengthOfArray = 0;
+    facets.forEach((obj: any) => {
+      lengthOfArray += obj.values.length;
+    });
+
+    this.noResult = (lengthOfArray) ? false : true;
   }
 
   removeFilterSelection(data) {

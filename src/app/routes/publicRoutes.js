@@ -25,6 +25,8 @@ module.exports = function (app) {
 
     // app.all('/api/asset/v1/upload/:id', proxyObj());
 
+    app.delete('/api/questionset/v1/retire/:QuestionSet_Id', proxyObj());
+
     if (envHelper.KONG_DEVICE_REGISTER_ANONYMOUS_TOKEN === 'true') {
         app.use('/api/*', session({
             secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',

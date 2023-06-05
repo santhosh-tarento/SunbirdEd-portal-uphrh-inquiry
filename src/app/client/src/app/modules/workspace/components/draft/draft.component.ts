@@ -12,6 +12,7 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
+import { ContentIDParam } from '../../interfaces/delteparam';
 
 /**
  * The draft component search for all the drafts
@@ -150,7 +151,19 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
       * To check if questionSet enabled
      */
      public isQuestionSetEnabled: boolean;
+
+     /**
+     * To store deleteing content type
+     */
+    private contentMimeType: string;
+
     /**
+     * To store deleting content id
+     */
+    private currentContentId: ContentIDParam;
+
+    /**
+     * 
       * Constructor to create injected service(s) object
       Default method of Draft Component class
       * @param {SearchService} SearchService Reference of SearchService
@@ -177,7 +190,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.config = config;
         this.state = 'draft';
         this.loaderMessage = {
-            'loaderMessage': this.resourceService.messages.stmsg.m0011,
+            'loaderMessage': this.resourceService?.messages?.stmsg?.m0011,
         };
     }
     ngOnInit() {
@@ -274,7 +287,9 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     /**
      * This method launch the content editior
     */
-    contentClick(param) {
+    contentClick(param, content) {
+        this.contentMimeType = content.metaData.mimeType;
+        this.currentContentId = content.metaData.identifier;
         if (_.size(param.data.lockInfo) && this.userService.userid !== param.data.lockInfo.createdBy) {
             this.lockPopupData = param.data;
             this.showLockedContentModal = true;
@@ -314,6 +329,10 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 this.loaderMessage = {
                     'loaderMessage': this.resourceService.messages.stmsg.m0034,
                 };
+                if(this.contentMimeType === 'application/vnd.sunbird.questionset') {
+                    this.deleteQuestionSetContent(this.currentContentId);
+                    return;
+                }
                 this.delete(contentIds).subscribe(
                     (data: ServerResponse) => {
                         this.showLoader = false;
@@ -333,6 +352,27 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             .onDeny(result => {
             });
     }
+
+
+     /**
+     * This method deletes questionset using the questionset id.
+     */
+      deleteQuestionSetContent(questionSetId) {
+        this.deleteQuestionSet(questionSetId).subscribe(
+          (data: ServerResponse) => {
+            this.showLoader = false;
+            this.draftList = this.removeContent(this.draftList, questionSetId);
+            if (this.draftList.length === 0) {
+              this.ngOnInit();
+            }
+            this.toasterService.success(this.resourceService.messages.smsg.m0006);
+          },
+          (err: ServerResponse) => {
+            this.showLoader = false;
+            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
+          }
+        );
+      }
 
     /**
    * This method helps to navigate to different pages.

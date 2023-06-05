@@ -7,18 +7,31 @@
                 <div class="six wide column">
                     <img class="ui fluid image" src="{{'assets/images/landingPage.jpg' |  cdnprefixurl}} " />
                 </div>
+                <!-- <div class="six wide column" *ngIf="!mainContent.length"> -->
                 <div class="six wide column">
-                    <p>In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal,
-                        an event which drew 1100 participants.</p>
-                    <p>The forum took stock of the fact that many countries were far from having reached the goals established at the
-                        World Conference on Education for All in 1990.</p>
+                    <!-- <p>In 2000, ten years later, the international community met again at the World Education Forum in Dakar, Senegal,
+                        an event which drew 1100 participants.</p> -->
+                    <p>
+                        The Hon’ble Chief Minister of Uttar Pradesh, Shri Yogi Adityanath, has envisioned the ambitious goal of turning UP into a hub of quality nursing and paramedical education in the state.
+                    </p>
+                    <!-- <p>The forum took stock of the fact that many countries were far from having reached the goals established at the
+                        World Conference on Education for All in 1990.</p> -->
+                    <p>
+                        In order to realize this vision, Mission Niramaya was formulated by UP State Medical Faculty, under the aegis of the Department of Medical Education, and was subsequently launched by the CM on 8th October 2022. A bouquet of reforms are envisioned under this Mission, which are going to be enabled through a population scale technological platform.
+                    </p>
                     <br/>
-                    <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education
+                    <!-- <p>The participants agreed on the Dakar Framework for Action which re-affirmed their commitment to achieving Education
                         for All by the year 2015, and identified six key measurable education goals which aim to meet the learning
-                        needs of all children, youth and adults by 2015.</p>
+                        needs of all children, youth and adults by 2015.</p> -->
+                    <p>
+                        The aim of this platform is to bring most of its student and institute management processes online, and to turn SMF into a competency-focussed regulator of human resources in health.
+                    </p>
                     <br/>
-                    <a href="#">Read More > </a>
+                    <!-- <a href="#">Read More > </a> -->
                 </div>
+                <!-- <div class="six wide column" *ngIf="mainContent.length > 0">
+                    <p *ngFor="let content of mainContent">{{content.contentText}}</p>
+                </div> -->
             </div>
         </div>
     </div>
@@ -26,7 +39,7 @@
     <div class="ui container relative9">
     <div class="ui stackable grid">
         <div class="eight wide column ">
-            <div class="ui segment">
+            <div class="ui segment"  *ngIf="showUserArticle">
                 <div class="header p-10 segment-heading">
                     <span>Featured Articles</span>
                     <a href="#" class="right-floated">View All</a>
@@ -75,7 +88,7 @@
             </div>
         </div>
         <div class="four wide column">
-            <div class="ui segment">
+            <div class="ui segment" *ngIf="showAnnoucements">
                 <div class="content">
                     <div class="header segment-heading">
                         <span>Announcements</span>
@@ -104,7 +117,7 @@
                 </div>
             </div>
             <br>
-            <div class="ui segment">
+            <div class="ui segment" *ngIf="showUserCalender">
                 <div class="content">
                     <div class="header segment-heading">
                         <span>Calendar</span>

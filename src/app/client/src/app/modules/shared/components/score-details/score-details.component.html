@@ -1,0 +1,53 @@
+<div class="ui grid">
+    <div class="eight wide column">
+        <h3 class="mb-20 text-center">{{data.assessmentName}}, {{data.assessmentDate | dateFormat}}</h3>
+        <div class="gray-container mb-20 p-20">
+            {{resourceService?.frmelmnts?.lbl?.board | transposeTerms: 'frmelmnts.lbl.board' : resourceService?.selectedLang}}: {{data?.framework?.board}}
+        </div>
+        <h4 class="mb-20">{{resourceService.frmelmnts?.lbl?.competenciesAttempted}}</h4>
+        <ng-container *ngFor="let compentencyScore of data.competenciesScores">
+            <div class="lightgray-container mb-20">
+                <div class="ui grid p-20">
+                    <div class="eight wide column">
+                        <h5 class="mb-5">{{compentencyScore.name}}</h5>
+                        <p *ngFor="let level of compentencyScore?.levels">{{level?.name}}</p>
+                    </div>
+                    <div class="four wide column text-center">
+                        <h6>{{compentencyScore.score}}%</h6>
+                    </div>
+                </div>
+                <hr/>
+                <div class="p-10">
+                    {{compentencyScore.totalQuestion}} {{resourceService.frmelmnts?.lbl?.questions}}:  {{compentencyScore.correctAnswer}} {{resourceService.frmelmnts?.lbl?.correctAnswer}},  {{compentencyScore.incorrectAnswer}} {{resourceService.frmelmnts?.lbl?.incorrectAnswer}}
+                </div>
+            </div>
+
+        </ng-container>
+        <ng-content></ng-content>
+    </div>
+    <div class="four wide column" *ngIf="data?.scoreSummary || data?.nodalFeedback">
+        <div *ngIf="data?.scoreSummary">
+            <h5>{{resourceService.frmelmnts?.lbl?.scoreSummary}}</h5>
+            <div class="lightgray-container mb-5 p-10">
+                {{resourceService.frmelmnts?.lbl?.totalCorrect}}: {{data.scoreSummary.totalCorrect}}
+            </div>
+            <div class="lightgray-container mb-5 p-10">
+                {{resourceService.frmelmnts?.lbl?.totalIncorrect}}: {{data.scoreSummary.totalIncorrect}}
+            </div>
+            <div class="lightgray-container mb-5 p-10">
+                {{resourceService.frmelmnts?.lbl?.totalTimeSpent}}: {{data.scoreSummary.totalTimeSpent}}
+            </div>
+            <div class="gray-container mb-20 p-10">
+                {{resourceService.frmelmnts?.lbl?.totalResult}}: {{data.scoreSummary.totalResult}}%
+            </div>
+        </div>
+        <div *ngIf="data?.nodalFeedback">
+            <h5>{{resourceService.frmelmnts?.lbl?.nodalFeedback}}</h5>
+            <div class="lightgray-container p-20">
+                {{data?.nodalFeedback}}
+            </div>
+        </div>
+        
+    </div>
+
+</div>

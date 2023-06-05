@@ -196,10 +196,14 @@ export class SearchService {
           limit: requestParam.limit,
           offset: (requestParam.pageNumber - 1) * requestParam.limit,
           query: requestParam.query,
-          softConstraints: { badgeAssertions: 1 }
         }
       }
     };
+
+    if (!requestParam?.type) {
+      option.data.request['softConstraints'] = { badgeAssertions: 1 };
+    }
+    
     return this.learnerService.post(option);
   }
   /**

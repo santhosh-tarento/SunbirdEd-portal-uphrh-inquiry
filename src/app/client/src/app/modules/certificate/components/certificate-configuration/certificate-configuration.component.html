@@ -147,10 +147,12 @@
                   </div>
                 </div>
 
-                <div class='ui stackable grid mt-0'>
+                <div class='ui stackable grid mt-0 rules'>
                   <div class="seven wide column">
                     <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
-                      {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}</div>
+                      {{resourceService?.frmelmnts?.cert?.lbl?.certRules}}
+                      <span class="asterik">*</span>
+                    </div>
                     <div class="d-flex flex-dc w-50">
                         <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
                           <mat-label>{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</mat-label>
@@ -186,6 +188,37 @@
                             {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
                           </p>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ui stackable grid">
+                  <div class="sb-field-group">
+                    <div class="eight wide column">
+                      <label class="text-uppercase">{{resourceService?.frmelmnts?.cert?.lbl?.certificateValidity}}</label>
+                      <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                        <mat-select formControlName="certificateValidityType" role="listbox" aria-label="Certificate validity"
+                          class="selection" >
+                          <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of certificateValidityTypes" [value]="option"
+                          attr.aria-label="{{option}}">{{option}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="sb-field-group">
+                    <div class="four wide column">
+                      <div *ngIf="userPreference.value.certificateValidityType === 'Limited'">
+                        <label class="required text-uppercase">{{resourceService?.frmelmnts?.cert?.lbl?.certificateExpiresIn}}</label>
+                        <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
+                          <mat-select formControlName="certificateExpiresIn" role="listbox" aria-label="certificate expires in year list"
+                            class="selection" >
+                            <mat-option class="mat-dropdown__options" role="option" *ngFor="let option of certificateExpireYears" [value]="option"
+                            attr.aria-label="{{option}}">
+                              {{option}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
                       </div>
                     </div>
                   </div>
@@ -236,9 +269,9 @@
 
                 <div class='ui stackable grid mt-0'>
                   <div class="twelve wide column">
-                    <div class="sb-checkbox sb-checkbox-secondary pt-24">
-                      <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected">
-                      <label for="check2" class="text-left">{{resourceService?.frmelmnts?.cert?.lbl?.verified}}</label>
+                    <div class="sb-checkbox sb-checkbox-secondary pt-24 verified">
+                      <input formControlName="allowPermission" value="true" type="checkbox" id="check2" name="selected" >
+                      <label for="check2" class="text-left" ><span class="asteriks">*</span>{{resourceService?.frmelmnts?.cert?.lbl?.verified}}</label>
                     </div>
                   </div>
                 </div>

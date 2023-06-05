@@ -17,7 +17,12 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, 
+  AllTextbooksComponent, NewCollectionEditorComponent, 
+  AssessmentsListComponent, StudentsListComponent, AssignAssessmentsComponent,
+  PendingForSubmissionListComponent,
+  ResultEvaluationComponent, ResultEvalutionAllListComponent, ResultEvalutionPendingListComponent,
+  ScoreDetailComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
@@ -26,8 +31,10 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
 import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
-import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor-v9';
+//import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor-v9';
+import { CollectionEditorLibraryModule } from 'upsmf-collection-editor';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -45,7 +52,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PlayerHelperModule,
     ContentSearchModule,
     CollectionEditorLibraryModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -67,7 +75,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
     WorkspaceContentFilterComponent,
-    NewCollectionEditorComponent
+    NewCollectionEditorComponent,
+    AssessmentsListComponent,
+    StudentsListComponent,
+    ResultEvaluationComponent,
+    AssignAssessmentsComponent,
+    PendingForSubmissionListComponent,
+    ResultEvalutionAllListComponent, ResultEvalutionPendingListComponent,
+    ScoreDetailComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })

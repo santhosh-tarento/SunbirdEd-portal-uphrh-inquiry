@@ -5,7 +5,8 @@
   "layoutConfiguration": {
     "source": "",
     "name": "newLayout",
-    "options": ""
+    "options": "",
+    "layout":"v2"
   },
   "CommonSearch": {
     "contentType": [
@@ -851,9 +852,9 @@
           }
         ],
         "sideMenu": {
-          "showShare": true,
-          "showDownload": true,
-          "showExit": false
+          "showShare": false,
+          "showDownload": false,
+          "showExit": true
         }
       }
     },
@@ -914,9 +915,14 @@
       "Practice Question Set",
       "eTextbook",
       "Teacher Resource",
-      "Course Assessment"
+      "Course Assessment",
+      "Self Question Set",
+      "PIAA Question Set",
+      "Blueprint Question Set",
+      "Self Assessment",
+      "PIAA Assessment"
     ],
-    "adminHandledContentType" :[
+    "adminHandledContentType": [
       "TextBook"
     ],
     "mimeType": [
@@ -924,7 +930,10 @@
       "application/vnd.ekstep.content-collection"
     ],
     "objectType": "Content",
-    "allowedObjectType": ["Content", "QuestionSet"],
+    "allowedObjectType": [
+      "Content",
+      "QuestionSet"
+    ],
     "lastUpdatedOn": "desc",
     "createdOn": "asc",
     "createdDate": "desc",
@@ -1183,7 +1192,20 @@
     "questionPrimaryCategories": [
       "Multiple Choice Question",
       "Subjective Question"
-    ]
+    ],
+    "ASSESSMENT":{
+      "PRIMARY_CATEGORY":[
+        "PIAA Assessment"
+      ],
+      "PAGE_LIMIT": 50,
+      "STATUS": [
+        "Assigned",
+        "In Progress",
+        "Completed",
+        "Pending Evaluation",
+        "Evaluation Completed"
+      ]
+    }
   },
   "DASHBOARD": {
     "PAGE_LIMIT": 200
@@ -1345,6 +1367,31 @@
     "inPageredirectUrl": "/learn",
     "searchPageredirectUrl": "/search/Courses/1"
   },
+  "assessment": {
+    "filterType": "assessments",
+    "inPageredirectUrl": "workspace/content/assessments/list/1",
+    "searchPageredirectUrl": "workspace/content/assessments/list/1"
+  },
+  "allCandidateList": {
+    "filterType": "assign",
+    "inPageredirectUrl": "workspace/content/assessments/assign/all/1",
+    "searchPageredirectUrl": "workspace/content/assessments/assign/all/1"
+  },
+  "pendingList": {
+    "filterType": "pendingForSubmission",
+    "inPageredirectUrl": "workspace/content/assessments/assign/pendingForSubmission/1",
+    "searchPageredirectUrl": "workspace/content/assessments/assign/pendingForSubmission/1"
+  },
+  "resultEvaluation": {
+    "filterType": "resultEvaluation",
+    "inPageredirectUrl": "workspace/content/resultEvaluation/all/1",
+    "searchPageredirectUrl": "workspace/content/resultEvaluation/all/1"
+  },
+  "pendingForEvaluation": {
+    "filterType": "pendingForEvaluation",
+    "inPageredirectUrl": "workspace/content/resultEvaluation/pendingForEvaluation/1",
+    "searchPageredirectUrl": "workspace/content/resultEvaluation/pendingForEvaluation/1"
+  },
   "formApiTypes": {
     "home": "home",
     "textbook": "textbook",
@@ -1458,25 +1505,47 @@
   "DIAL_CODE": {
     "PAGE_LIMIT": 10
   },
-  "userTypeMapping" : {
-    "student": ["Student", "Learner"],
-    "teacher": ["Teacher", "Instructor"],
-    "other": ["Student", "Teacher", "Instructor", "Learner"],
-    "administrator": ["Administrator"],
-    "parent": ["Student", "Teacher", "Instructor", "Learner"]
+  "userTypeMapping": {
+    "student": [
+      "Student",
+      "Learner"
+    ],
+    "teacher": [
+      "Teacher",
+      "Instructor"
+    ],
+    "other": [
+      "Student",
+      "Teacher",
+      "Instructor",
+      "Learner"
+    ],
+    "administrator": [
+      "Administrator"
+    ],
+    "parent": [
+      "Student",
+      "Teacher",
+      "Instructor",
+      "Learner"
+    ]
   },
-  "contentType" : {
-    "Course" : "Course",
+  "contentType": {
+    "Course": "Course",
     "Collection": "Collection",
     "Textbook": "Textbook",
     "Resource": "Resource",
-    "Courses" : "Courses",
+    "Courses": "Courses",
     "Textbooks": "Textbooks"
   },
   "assetsPath": {
     "book": "./assets/images/book.png"
   },
   "OTPTemplate": {
-      "updateContactTemplate": "otpContactUpdateTemplate"
+    "updateContactTemplate": "otpContactUpdateTemplate"
+  },
+  "COURSE_CERTIFICATE": {
+    "EXPIRY_YEARS": [1,2,3,4,5,6,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40],
+    "VALIDITY_TYPES": ["Limited", "Lifetime"]
   }
 }

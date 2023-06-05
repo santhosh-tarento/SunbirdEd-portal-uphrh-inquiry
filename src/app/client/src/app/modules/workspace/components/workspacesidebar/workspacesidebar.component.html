@@ -10,6 +10,17 @@
       {{resourceService?.frmelmnts?.snav?.start}}
     </a>
 
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('allassessments-button')" *ngIf='permissionService.permissionAvailable' appPermission [permission]='nodalOfficerRole' class="item" [routerLink]="['assessments']" routerLinkActive="active"  matTooltip="List of Assessments, Assign Assessment"
+  [matTooltipPosition]="'right'">
+    {{resourceService?.frmelmnts?.snav?.assessments}}
+  </a>
+
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('result-evaluation-button')" *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/assessments') " appPermission
+  [permission]='resultEvaluationRole' class="item" [routerLink]="['assessments']"   matTooltip="View assessments submitted for result evaluation"
+  [matTooltipPosition]="'right'">
+    {{resourceService?.frmelmnts?.snav?.resultEvaluation}}
+  </a>
+
   <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('alltextbooks-button')"  *ngIf='permissionService.permissionAvailable' [class.active]="router.isActive('/workspace/content/alltextbooks') " 
     appPermission [permission]='alltextbookRole' class="item" [routerLink]="['alltextbooks',1]"  matTooltip="View all Textbooks"
     [matTooltipPosition]="'right'">

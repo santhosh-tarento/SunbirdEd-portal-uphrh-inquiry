@@ -25,7 +25,8 @@ const ROLE = {
   ALL: 'ALL',  // Use when user does not have PUBLIC role (Case: User bulk upload),
   ANONYMOUS: 'ANONYMOUS',
   PROGRAM_MANAGER:"PROGRAM_MANAGER",
-  PROGRAM_DESIGNER: "PROGRAM_DESIGNER"
+  PROGRAM_DESIGNER: "PROGRAM_DESIGNER",
+  NODAL_OFFICER: "NODAL_OFFICER"
 };
 
 const API_LIST = {
@@ -266,7 +267,8 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER,
         ROLE.COURSE_CREATOR,
         ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER,
-        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN
+        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN,
+        ROLE.NODAL_OFFICER
       ]
     },
 
@@ -418,7 +420,9 @@ const API_LIST = {
     },
     '/learner/course/v1/batch/participants/list': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR,
+        ROLE.NODAL_OFFICER
+      ]
     },
     '/learner/course/v1/batch/list': {
       checksNeeded: ['ROLE_CHECK'],
@@ -428,6 +432,31 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
+    '/learner/course/v1/admin/bulk/unenrol': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.NODAL_OFFICER]
+    },
+    '/learner/course/v1/admin/bulk/enrol': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.NODAL_OFFICER]
+    },
+    '/learner/course/v1/course/admin/course/eval': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.NODAL_OFFICER]
+    },
+    '/learner/course/v2/user/courses/admin/evaluationList':{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
+    },
+    '/learner/course/v1/course/batch/piaa/cert/issue':{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
+    },
+    '/learner/course/v1/course/admin/course/notissuecertificate':{
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
+    },
+
 
     //User related APIs
     '/learner/user/v1/create': {
@@ -1600,6 +1629,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     // Question & QuestionSet API's
+    '/api/questionset/v1/retire/:QuestionSet_Id': {
+      description: 'QuestionSet delete',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
     '/action/questionset/v1/create': {
       description: 'QuestionSet create',
       checksNeeded: ['ROLE_CHECK'],
@@ -2034,7 +2070,8 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/update/:id',
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
-    '/kendra/user-extension/mlcore/v1/solutions/:id'
+    '/kendra/user-extension/mlcore/v1/solutions/:id',
+    '/api/questionset/v1/retire/:QuestionSet_Id'
   ]
 };
 module.exports = API_LIST;

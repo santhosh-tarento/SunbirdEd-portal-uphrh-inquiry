@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { WorkSpaceService } from './../../services';
+import {  ISort } from '@sunbird/core';
 
 @Component({
   selector: 'app-workspace-content-filter',
@@ -42,6 +44,10 @@ export class WorkspaceContentFilterComponent implements OnInit {
     * To call resource service which helps to use language constant
   */
   public resourceService: ResourceService;
+   /**
+    * To call workSpace service 
+  */
+    public workspaceService: WorkSpaceService;
   /**
   * To get url, app configs
   */
@@ -64,6 +70,11 @@ export class WorkspaceContentFilterComponent implements OnInit {
   filterIntractEdata: IInteractEventEdata;
 
   /**
+   * sorting options needs to be applied
+   */
+  @Input() sortingByOptions: Array<ISort>;
+
+  /**
    * Constructor to create injected service(s) object
    Default method of Draft Component class
    * @param {SearchService} SearchService Reference of SearchService
@@ -76,6 +87,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
     public navigationHelperService: NavigationHelperService,
+    workspaceService: WorkSpaceService,
     route: Router) {
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -85,9 +97,11 @@ export class WorkspaceContentFilterComponent implements OnInit {
     this.route.onSameUrlNavigation = 'reload';
     this.label = this.config.dropDownConfig.FILTER.WORKSPACE.label;
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.workspaceService= workspaceService;
   }
 
   ngOnInit() {
+    this.sortingOptions = this.sortingByOptions?.length ? this.sortingByOptions : this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     this.setFilterTypeAndRedirectURL();
     this.activatedRoute.queryParams
       .subscribe(params => {
@@ -113,10 +127,14 @@ export class WorkspaceContentFilterComponent implements OnInit {
         type: 'click',
         pageid: 'all-my-content-page'
       };
+      this.workspaceService.workspaceSearchLabelConfig$.subscribe((searchLabelConfig) => {
+        if(searchLabelConfig.searchLabel?.label && searchLabelConfig.searchLabel?.label.length) {
+          this.label = searchLabelConfig.searchLabel?.label;
+        }
+      })
   }
 
   setFilterTypeAndRedirectURL() {
-
     if (_.includes(this.route.url, 'published')) {
       this.filterType = this.config.appConfig.published.filterType;
       this.redirectUrl = this.config.appConfig.published.inPageredirectUrl;
@@ -126,7 +144,27 @@ export class WorkspaceContentFilterComponent implements OnInit {
     } else if (_.includes(this.route.url, 'alltextbooks')) {
       this.filterType = this.config.appConfig.alltextbooks.filterType;
       this.redirectUrl = this.config.appConfig.alltextbooks.inPageredirectUrl;
-    } else {
+    } else if(_.includes(this.route.url, 'list')){
+       this.filterType = this.config.appConfig.assessment.filterType;
+       this.redirectUrl = this.config.appConfig.assessment.inPageredirectUrl;
+    }
+    else if(_.includes(this.route.url, 'assign/all')){
+      this.filterType = this.config.appConfig.allCandidateList.filterType;
+       this.redirectUrl = this.config.appConfig.allCandidateList.inPageredirectUrl;
+    }
+    else if(_.includes(this.route.url, 'assign/pendingForSubmission')){
+      this.filterType = this.config.appConfig.pendingList.filterType;
+       this.redirectUrl = this.config.appConfig.pendingList.inPageredirectUrl;
+    }
+    else if(_.includes(this.route.url, 'resultEvaluation/all')){
+      this.filterType = this.config.appConfig.resultEvaluation.filterType;
+       this.redirectUrl = this.config.appConfig.resultEvaluation.inPageredirectUrl;
+    }
+    else if(_.includes(this.route.url, 'resultEvaluation/pendingForEvaluation')){
+      this.filterType = this.config.appConfig.pendingForEvaluation.filterType;
+       this.redirectUrl = this.config.appConfig.pendingForEvaluation.inPageredirectUrl;
+    }
+     else {
       this.filterType = this.config.appConfig.allmycontent.filterType;
       this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
     }

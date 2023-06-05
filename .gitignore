@@ -17,6 +17,7 @@ mochawesome-report
 /src/app/coverage
 .idea
 /src/app/helpers/devConfig.js
+/src/app/helpers/qaconfig.js
 logs
 keys
 #DESKTOP APP

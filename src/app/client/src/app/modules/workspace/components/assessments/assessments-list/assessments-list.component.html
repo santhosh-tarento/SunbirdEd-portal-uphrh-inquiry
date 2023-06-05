@@ -1,0 +1,64 @@
+<app-workspace-content-filter ></app-workspace-content-filter>
+<div class="twelve wide column mt-20" *ngIf="showLoader">
+    <app-loader [data]="loaderMessage"></app-loader>
+</div>
+<div *ngIf="noResult && !showLoader">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+</div>
+
+<h3 *ngIf="!showLoader">List of Assessments</h3>
+<table class="ui upForReviewTable table" *ngIf="allAssessments?.length > 0 && !showLoader && !noResult ">
+    <thead>
+        <tr>
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.snav?.assessments }}</th>
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.board }}</th>
+            <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.medium }}</th>
+            <th class="four wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.grade }}</th>
+            <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.action }}</th>
+        </tr>
+    </thead>
+    <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)"
+        [throttle]="[1000]" [trigger]="allAssessments">
+        <tr in-view-item class="UpForReviewListHover" *ngFor="let assessment of allAssessments let i = index;" [id]="i"
+            [data]="content" appTelemetryInteract>
+            <td tabindex="0">
+                <div class="UpReviewHeader">{{ (assessment?.name) ? (assessment?.name | slice:0:50) : 'NA' }}
+                    <i *ngIf="assessment?.name?.length > 50">...</i>
+                </div>
+            </td>
+            <td>
+                <div *ngFor="let board of assessment.se_boards">{{ board }}</div>
+            </td>
+            <td>
+                <div *ngFor="let medium of assessment.se_mediums">{{ medium }}</div>
+            </td>
+            <td>
+                <div *ngFor="let grade of assessment.se_gradeLevels">{{ grade }}</div>
+            </td>
+            <td>
+                <div *ngIf="!assessment?.batches || assessment?.batches?.length === 0">No batch found</div>
+                <div class="assign-link" (click)="handleAssignAssessment(assessment)" *ngIf="assessment?.batches && assessment?.batches?.length">{{isOrgAdmin ? 'Evaluate'  : 'Assign'}}</div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column">
+        <div class="pb-10"
+            *ngIf="allAssessments && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
+            <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0"
+                    (click)="navigateToPage(1) ">First</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0"
+                    (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0"
+                    (click)="navigateToPage(page)" class="item">{{page}}</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0"
+                    (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0"
+                    (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+            </div>
+        </div>
+    </div>
+</div>

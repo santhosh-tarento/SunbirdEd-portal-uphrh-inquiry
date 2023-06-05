@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/
 import { CertificateService, UserService, PlayerService, CertRegService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE, ConfigService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
@@ -64,7 +64,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
-  certificateFormConfig: any;
+  certificateFormConfig: any
+  certificateExpireYears: Array<number> = [];
+  certificateValidityTypes: Array<string> = [];
 
   constructor(
     private certificateService: CertificateService,
@@ -80,7 +82,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private router: Router,
     private telemetryService: TelemetryService,
     public layoutService: LayoutService,
-    private formService: FormService) {
+    private formService: FormService,
+    public configService: ConfigService
+    ) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     }
@@ -99,6 +103,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
    * @description - It will prepare all the necessary data along with the apis.
    */
   ngOnInit() {
+    this.certificateExpireYears = this.configService.appConfig.COURSE_CERTIFICATE.EXPIRY_YEARS;
+    this.certificateValidityTypes = this.configService.appConfig.COURSE_CERTIFICATE.VALIDITY_TYPES;
     this.initializeLabels();
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
@@ -274,9 +280,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.userPreference = new FormGroup({
       scoreRange: new FormControl(''),
       issueTo: new FormControl('', [Validators.required]),
-      allowPermission: new FormControl('', [Validators.required])
+      allowPermission: new FormControl('', [Validators.required]),
+      certificateValidityType : new FormControl(this.certificateValidityTypes[1]),
+      certificateExpiresIn: new FormControl(this.certificateExpireYears[0]),
     });
     this.userPreference.valueChanges.subscribe(val => {
+      const certificateValidityType = _.get(val, 'certificateValidityType');
+      if(certificateValidityType === 'Limited') {
+        this.userPreference.get("certificateExpiresIn").setValidators([Validators.required]);
+      } else {
+        this.userPreference.get("certificateExpiresIn").clearValidators();
+      }
       this.validateForm();
     });
   }
@@ -321,6 +335,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.addScoreRule === false) {
       this.userPreference.value['scoreRange'] = null;
     }
+  
+    const { scoreRange, issueTo, allowPermission, certificateExpiresIn, certificateValidityType } = this.userPreference.value;
+    const userPreference = {scoreRange,issueTo,allowPermission} ;
+    if(certificateValidityType === this.certificateValidityTypes[0]) {
+      userPreference['expiry_duration'] = certificateExpiresIn;
+    }
+
     const request = {
       'request': {
         'batch': {
@@ -328,7 +349,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
           'batchId': _.get(this.queryParams, 'batchId'),
           'template': {
             'identifier': _.get(this.selectedTemplate, 'identifier'),
-            'criteria': this.getCriteria(this.userPreference.value),
+            'criteria': this.getCriteria(userPreference),
             'name': _.get(this.selectedTemplate, 'name'),
             'issuer': JSON.parse(_.get(this.selectedTemplate, 'issuer')),
             'data': JSON.stringify(_.get(this.selectedTemplate, 'data')),
@@ -416,6 +437,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
     scoreRange ? scoreRangeFormEle.setValue(scoreRange) : scoreRangeFormEle.setValue('');
+    const expiry_duration= _.get(data, 'expiry_duration');
+    if(expiry_duration)  {
+      this.userPreference.get('certificateValidityType').setValue(this.certificateValidityTypes[0]);
+      this.userPreference.get('certificateExpiresIn').setValue(expiry_duration);
+    }
   }
 
   handleCertificateEvent(event, template: {}) {

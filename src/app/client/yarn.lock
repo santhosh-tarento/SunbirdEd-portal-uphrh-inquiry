@@ -2218,13 +2218,6 @@
   dependencies:
     ally.js "1.4.1"
 
-"@project-sunbird/sunbird-question-editor@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
-  integrity sha512-QZP/JBZoLAW7cj1MXDtI/vi2ovd1j/9ZrUNXI3wv4VYXC/JlG5ceHsBGmuxaiLQHkBbc/aLUM6BwlwULuiqP8w==
-  dependencies:
-    tslib "^1.9.0"
-
 "@project-sunbird/sunbird-quml-player-v9@5.1.5":
   version "5.1.5"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-5.1.5.tgz#a372503a91311d493cfcf628a6f37a0e235681de"
@@ -2233,12 +2226,20 @@
     "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
     tslib "^2.2.0"
 
-"@project-sunbird/sunbird-resource-library@0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-0.0.19.tgz#cc9b12dbbd4ab1bce7d136f29bc567d2ae6e9e2d"
-  integrity sha512-yn24LCq6PAoBrosdJFM0T+j19vopjpxKTkYUtSLZAbFhlYqeKLnZCaBNQNvnwen9A2E9i1fw5UPxfNGOAYhMcw==
+"@project-sunbird/sunbird-quml-player@^5.3.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-5.5.0.tgz#93d661414d1c8dbde723a453ceca7a03d8e7880a"
+  integrity sha512-pE5obYreVhUA6LFKyT80FiUIm6Z+ZCKOjSTP8Z4pJAh0krUcy0GIqLvkyVtvQFnkIAiTQyDygD1Ly4fCuYAzOQ==
   dependencies:
-    tslib "^1.10.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.2.0"
+
+"@project-sunbird/sunbird-resource-library@5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-resource-library/-/sunbird-resource-library-5.2.0.tgz#6f0ce373249215e405977077ab1c91c0e28beeda"
+  integrity sha512-NsDihBSmQre3w81rrwx39nH3cu2UFL70IIYLerqbtDFwVwDNTyisRYYaZW8a7zxDGH9QEXzyU0961A+q68Yo1Q==
+  dependencies:
+    tslib "^2.0.0"
 
 "@project-sunbird/sunbird-video-player-v9@5.1.3":
   version "5.1.3"
@@ -2552,10 +2553,10 @@
   dependencies:
     localforage "*"
 
-"@types/lodash@^4.14.104":
-  version "4.14.191"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.191.tgz#09511e7f7cba275acd8b419ddac8da9a6a79e2fa"
-  integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
+"@types/lodash@4.14.116":
+  version "4.14.116"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.116.tgz#5ccf215653e3e8c786a58390751033a9adca0eb9"
+  integrity sha512-lRnAtKnxMXcYYXqOiotTmJd74uawNWuPnsnPrrO7HiFuE3npE2iQhfABatbYDyxTNqZNuXzcKGhw37R7RjBFLg==
 
 "@types/minimatch@*":
   version "5.1.2"
@@ -6579,7 +6580,7 @@ file-loader@6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -7792,6 +7793,11 @@ immediate@~3.0.5:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
+
+immutable@^4.0.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.3.0.tgz#eb1738f14ffb39fd068b1dbe1296117484dd34be"
+  integrity sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==
 
 immutable@^4.0.0-rc.12:
   version "4.2.2"
@@ -10199,6 +10205,11 @@ moment-duration-format@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-2.3.2.tgz#5fa2b19b941b8d277122ff3f87a12895ec0d6212"
   integrity sha512-cBMXjSW+fjOb4tyaVHuaVE/A5TqkukDWiOfxxAjY+PEqmmBQlLwn+8OzwPiG3brouXKY5Un4pBjAeB6UToXHaQ==
+
+moment@2.24.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 moment@2.29.1, moment@^2.10.2, moment@^2.29.1:
   version "2.29.1"
@@ -14535,6 +14546,13 @@ update-browserslist-db@^1.0.9:
   dependencies:
     escalade "^3.1.1"
     picocolors "^1.0.0"
+
+upsmf-collection-editor@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/upsmf-collection-editor/-/upsmf-collection-editor-1.0.2.tgz#6647c58f72bb119c4c9e3256d6f6bde2f4a1d876"
+  integrity sha512-71z5jKnhkjKPThvrVV9WOaHg2VbAFi4cgB9OtFIlYsa+NHhPVsjXqiXFRuwKxqdqW39fJ+n328jA+JVHyzE6Og==
+  dependencies:
+    tslib "^2.0.0"
 
 uri-js@^4.2.2:
   version "4.4.1"

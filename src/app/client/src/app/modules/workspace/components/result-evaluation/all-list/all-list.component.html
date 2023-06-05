@@ -1,0 +1,96 @@
+<div class="mt-20">
+    <app-workspace-content-filter [sortingByOptions]="sortingOptions" ></app-workspace-content-filter>
+</div>
+<div class="twelve wide column mt-20" *ngIf="showLoader">
+    <app-loader [data]="loaderMessage"></app-loader>
+</div>
+
+<div *ngIf="!showLoader">
+    <div class="sb-g">
+        <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
+        </div>
+    </div>
+</div>
+
+<div *ngIf="noResult && !showLoader">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+</div>
+
+<table class="ui upForReviewTable table" *ngIf="allStudents.length > 0 && !showLoader && !noResult">
+    <thead>
+        <tr>
+            <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.candidateName }}</th>
+            <!-- <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.assessmentName }}</th>
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.positionAndCompetency }}</th> -->
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.date }}</th>
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.nodalFeedback }}</th>
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.nodalDetails }}</th>
+            <th class="one wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.result }}</th>
+            <th class="one wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.status }}</th>
+            <th class="one wide"></th>
+        </tr>
+    </thead>
+    <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)"
+        [throttle]="[1000]" [trigger]="allStudents">
+        <tr in-view-item class="UpForReviewListHover" *ngFor="let student of allStudents let i = index;" [id]="i"
+            [data]="student" appTelemetryInteract>
+            <td tabindex="0">
+                <div class="UpReviewHeader">{{ student?.firstName | slice:0:30 }}
+                    <i *ngIf="student?.firstName?.length > 30">...</i>
+                </div>
+            </td>
+            <!-- <td>
+                <div>NA</div>
+            </td>
+            <td>
+                <div>NA</div>
+            </td> -->
+            <td>
+                <div>{{ (student?.assessmentInfo && student?.assessmentInfo?.status >= 2) ? (student?.assessmentInfo?.dateTime | dateFormat) : 'Not Attempted' }}</div>
+            </td>
+            <td>
+                <div matTooltip="{{student?.assessmentInfo?.comment}}" [matTooltipPosition]="'right'">{{student?.assessmentInfo?.comment}}</div>
+            </td>
+            <td>
+                <div>{{student?.assessmentInfo?.addedBy}}</div>
+            </td>
+            <td>
+                <div>NA</div>
+            </td>
+            <td>
+                <div>{{(student?.assessmentInfo) ? getStatusText(student) : 'Not Assigned'}}</div>
+            </td>
+            <td class="text-center">
+                <button class="ui default basic compact icon button"
+                    appTelemetryInteract
+                  [telemetryInteractObject]="{id:student?.id}"
+                  [telemetryInteractEdata]="{id:'goToScoreDetails',type:'click',pageid:'result-evaluation-all-list'}"
+                  (click)="goToScoreDetails()"
+                  >
+                  <i class="right arrow icon"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column">
+        <div class="pb-10"
+            *ngIf="allStudents && totalCount > config.appConfig.WORKSPACE.ASSESSMENT.PAGE_LIMIT && !showLoader && !showError && !noResult">
+            <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0"
+                    (click)="handleNavigateToPage(1)">First</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0"
+                    (click)="handleNavigateToPage(pager.currentPage - 1)">Previous</a>
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0"
+                    (click)="handleNavigateToPage(page)" class="item">{{page}}</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0"
+                    (click)="handleNavigateToPage(pager.currentPage + 1)" class="item">Next</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0"
+                    (click)="handleNavigateToPage(pager.totalPages)" class="item ">Last</a>
+            </div>
+        </div>
+    </div>
+</div>

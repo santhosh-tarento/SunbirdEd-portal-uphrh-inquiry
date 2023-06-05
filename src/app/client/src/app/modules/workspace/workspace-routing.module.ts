@@ -7,14 +7,17 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, AllTextbooksComponent, NewCollectionEditorComponent } from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, AllTextbooksComponent, NewCollectionEditorComponent, 
+  AssignAssessmentsComponent, AssessmentsListComponent, StudentsListComponent, PendingForSubmissionListComponent, ResultEvaluationComponent,
+  ResultEvalutionAllListComponent, ResultEvalutionPendingListComponent, ScoreDetailComponent
+} from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
 const routes: Routes = [
   {
     path: 'content', component: WorkspaceComponent, canActivate: [AuthGuard], data: { roles: 'workspace' },
-    children: [
+    children: [ 
       {
         path: 'create', component: CreateContentComponent, canActivate: [AuthGuard],
         data: {
@@ -104,12 +107,22 @@ const routes: Routes = [
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
             }
+          },
+          {
+            path: 'questionsetblueprint', component: DataDrivenComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-create-questionset-blueprint', uri: '/workspace/content/create/questionsetblueprint',
+                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
+              }, breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
           }
         ]
       },
       {
         path: 'edit/collection/:contentId/:type/:state/:framework/:contentStatus',
-          component: CollectionEditorComponent, canActivate: [AuthGuard],
+        component: CollectionEditorComponent, canActivate: [AuthGuard],
         data: { roles: 'workspace' }
       },
       {
@@ -126,11 +139,11 @@ const routes: Routes = [
       },
       {
         path: 'edit/editorforlargecontent', component: GenericEditorComponent,
-        canActivate: [AuthGuard], data: { roles: 'workspace' , isLargeFileUpload: true }
+        canActivate: [AuthGuard], data: { roles: 'workspace', isLargeFileUpload: true }
       },
       {
         path: 'edit/collection/:contentId/:type/:state/:framework',
-          component: CollectionEditorComponent, canActivate: [AuthGuard],
+        component: CollectionEditorComponent, canActivate: [AuthGuard],
         data: { roles: 'workspace' }
       },
       {
@@ -242,6 +255,57 @@ const routes: Routes = [
         }
       },
       {
+        path: 'assessments', pathMatch: 'full', redirectTo: 'assessments/list/1'
+      },
+      {
+        path: 'assessments/list/:pageNumber', component: AssessmentsListComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-assessmentsList', subtype: 'paginate', uri: 'workspace/content/assessments/list/1',
+            type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+          },
+        }
+      },
+      {
+        path: 'assessments/assign/:pageNumber', component: StudentsListComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-studentsList', subtype: 'paginate', uri: 'workspace/content/assessments/assign/1',
+            type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+          },
+        }
+      },
+      {
+        path: 'assessments/assign', component: AssignAssessmentsComponent,
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-studentsList', subtype: 'paginate', uri: 'workspace/content/assessments/assign/1',
+            type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+          },
+        },
+        children: [
+          {
+            path: 'all/:pageNumber', component: StudentsListComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-content-assessement-assign-all', subtype: 'paginate', uri: 'workspace/content/assessments/assign/all/1',
+                type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+              },
+            }
+          },
+          {
+            path: 'pendingForSubmission/:pageNumber', component: PendingForSubmissionListComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-content-assessement-assign-pending-for-submission', subtype: 'paginate', uri: 'workspace/content/assessments/assign/pendingForSubmission/1',
+                type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+              },
+            }
+          },
+        ]
+
+      },
+      {
         path: 'alltextbooks/:pageNumber', component: AllTextbooksComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
@@ -265,12 +329,50 @@ const routes: Routes = [
         path: 'collaborating-on/:pageNumber', component: CollaboratingOnComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
-            env: telemetryEnv, pageid: 'workspace-content-collaborating-on',
-      subtype: 'paginate', uri: 'workspace/content/collaborating-on',
+            env: telemetryEnv, pageid: 'workspace-content-collaborating-on', subtype: 'paginate', uri: 'workspace/content/collaborating-on',
             type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
           }, roles: 'collaboratingRole',
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
         }
+      },
+      {
+        path: 'resultEvaluation', component: ResultEvaluationComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-result-evaluation', subtype: 'paginate', uri: 'workspace/content/resultEvaluation',
+            type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+          }, roles: 'resultEvaluationRole',
+        },
+        children: [
+          {
+            path: 'all/:pageNumber', component: ResultEvalutionAllListComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-content-result-evaluation-all', subtype: 'paginate', uri: 'workspace/content/resultEvaluation/all/1',
+                type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+              },
+            }
+          },
+          {
+            path: 'pendingForEvaluation/:pageNumber', component:  ResultEvalutionPendingListComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-content-result-evaluation-pending', subtype: 'paginate', uri: 'workspace/content/resultEvaluation/pendingForEvaluation/1',
+                type: 'list', mode: 'view', object: { type: objectType, ver: '1.0' }
+              },
+            }
+          },
+
+        ],
+      },
+      {
+        path: 'resultEvaluation/score/:assessmentId', component: ScoreDetailComponent, canActivate: [AuthGuard],
+          data: {
+            telemetry: {
+              env: telemetryEnv, pageid: 'workspace-result-evaluation-score', subtype: 'paginate', uri: 'workspace/content/resultEvaluation/score',
+              type: 'detail', mode: 'view', object: { type: objectType, ver: '1.0' }
+            }, roles: 'resultEvaluationRole',
+          },
       }
     ]
   },

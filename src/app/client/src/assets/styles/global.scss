@@ -1543,3 +1543,7 @@ html[layout="joy"] .sb-modal-content .ui.center.aligned.segment {
   font-weight: normal;
   padding: calculateRem(10px) 0;
 }
+sb-library-card-v4 .sb--card.sb--card--theme2 {
+  width: 100% !important ;
+  max-width: 350px !important;
+}

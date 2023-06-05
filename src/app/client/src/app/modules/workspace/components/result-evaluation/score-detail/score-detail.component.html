@@ -1,0 +1,36 @@
+<div class="sb-g mb-20">
+    <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
+        <div class="d-flex flex-dr">
+            <div class="d-flex flex-ai-center">
+                <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" (click)="navigateBack()">
+                    <i class="icon-svg icon-svg--xxs icon-back mr-4">
+                        <svg class="icon icon-svg--primary">
+                            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                        </svg>
+                    </i>
+                </button>
+            </div>
+            <div class="d-flex flex-dc ml-16">
+                <h4 class="header">Score Detail</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-score-details [data]="scoreDetails">
+    <div class="ui grid mt-20">
+        <div class="two wide column">
+            <button type="submit" (click)="navigateBack()" class="sb-btn sb-btn-normal ml-10">
+                {{ 'Exit' }}
+            </button>
+        </div>
+        <div class="ten wide column">
+            <button  class="sb-btn sb-btn-normal sb-btn-primary ml-10"   tabindex="1" style="float: right;">
+                {{ 'Issue certificate' }}
+            </button>
+            <button  class="sb-btn sb-btn-normal sb-btn-primary"  tabindex="0" style="float: right;">
+                {{ 'Not issue certificate' }}
+            </button>
+        </div> 
+    </div>
+</app-score-details>

@@ -8,6 +8,7 @@ import { FrameworkService, FormService, PermissionService, UserService, OrgDetai
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -30,6 +31,8 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() layoutConfiguration;
   @Input() isOpen;
   public showFilters = false;
+  pickerMinDate = new Date()
+  startDate:any= null;
 
   public formFieldProperties: Array<any>;
 
@@ -222,8 +225,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
     const queryParams: any = {};
     _.forIn(this.formInputData, (eachInputs: Array<any | object>, key) => {
-      const formatedValue = typeof eachInputs === 'string' ? eachInputs :
-        _.compact(_.map(eachInputs, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
+      const receivedInput = eachInputs instanceof Date ? dayjs(eachInputs).format('YYYY-MM-DD') : eachInputs;
+      const formatedValue = typeof receivedInput === 'string' ? receivedInput :
+        _.compact(_.map(receivedInput, value => typeof value === 'string' ? value : _.get(value, 'identifier')));
       if (formatedValue.length) {
         queryParams[key] = formatedValue;
       }

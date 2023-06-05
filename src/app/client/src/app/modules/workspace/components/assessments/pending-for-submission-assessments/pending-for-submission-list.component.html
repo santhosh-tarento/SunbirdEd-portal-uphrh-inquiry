@@ -1,0 +1,120 @@
+<div class="mt-20">
+    <app-workspace-content-filter [sortingByOptions]="sortingOptions" ></app-workspace-content-filter>
+</div>
+
+<div class="twelve wide column mt-20" *ngIf="showLoader">
+    <app-loader [data]="loaderMessage"></app-loader>
+</div>
+
+<div *ngIf="noResult && !showLoader">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+</div>
+
+<table class="ui upForReviewTable table" *ngIf="allStudents.length > 0 && !showLoader && !noResult">
+    <thead>
+        <tr>
+            <th class="four wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.candidateName }}</th>
+            <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.attempted }}</th>
+            <!-- <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.idNo }}</th>
+            <th class="two wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.position }}</th> -->
+            <th class="three wide UpReviewTableHeader">{{ resourceService?.frmelmnts?.lbl?.header?.status }}</th>
+            <th class="two wide text-center">
+                <mat-checkbox (change)="handleCheckBoxChange($event)" [(ngModel)]="isChecked" class="custom-select sb-mat__checkbox sb-mat__checkbox--primary"></mat-checkbox>
+            </th>
+        </tr>
+    </thead>
+    <tbody [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inview($event)"
+        [throttle]="[1000]" [trigger]="allStudents">
+        <tr in-view-item class="UpForReviewListHover" *ngFor="let student of allStudents let i = index;" [id]="i"
+            [data]="student" appTelemetryInteract>
+            <td tabindex="0">
+                <div class="UpReviewHeader">{{ student?.firstName | slice:0:30 }}
+                    <i *ngIf="student?.firstName?.length > 30">...</i>
+                </div>
+            </td>
+            <td>
+                <div>{{ (student?.assessmentInfo && student?.assessmentInfo?.status >= 2) ? (student?.assessmentInfo?.dateTime | dateFormat) : 'Not Attempted' }}</div>
+            </td>
+            <!-- <td>
+                <div>{{ student?.userId }}</div>
+            </td> -->
+            <!-- <td>
+                <div>{{ (assessment?.se_boards) ? assessment?.se_boards[0] : 'NA' }}</div>
+            </td> -->
+            <td>
+                <div>{{(student?.assessmentInfo) ? getAssessmentStatus(student?.assessmentInfo?.status) : 'Not Assigned'}}</div>
+            </td>
+            <td class="text-center">
+                <mat-checkbox (change)="handleCheckBoxChange($event, student)"  class="custom-select sb-mat__checkbox sb-mat__checkbox--primary" [checked]="student.checked" [disabled]="getDisableCheckboxFlag(student)"></mat-checkbox>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="ui grid">
+    <div class="twelve wide column">
+        <button type="submit" (click)="openFeedbackPopup('submit')" class="sb-btn sb-btn-normal sb-btn-primary ml-10" [disabled]="disableEvaluationAction" [ngClass]="{'sb-btn-disabled': disableEvaluationAction}" tabindex="1" style="float: right;">
+            {{ 'Submit for evaluation' }}
+        </button>
+        <button type="submit" (click)="openFeedbackPopup('abort')" class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="disableAbortAction" [ngClass]="{'sb-btn-disabled': disableAbortAction}" tabindex="0" style="float: right;">
+            {{ 'Abort Assessment' }}
+        </button>
+    </div>
+</div>
+
+<div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column">
+        <div class="pb-10"
+            *ngIf="allStudents && totalCount > config.appConfig.WORKSPACE.ASSESSMENT.PAGE_LIMIT && !showLoader && !showError && !noResult">
+            <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0"
+                    (click)="handleNavigateToPage(1)">First</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0"
+                    (click)="handleNavigateToPage(pager.currentPage - 1)">Previous</a>
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0"
+                    (click)="handleNavigateToPage(page)" class="item">{{page}}</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0"
+                    (click)="handleNavigateToPage(pager.currentPage + 1)" class="item">Next</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0"
+                    (click)="handleNavigateToPage(pager.totalPages)" class="item ">Last</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<app-modal-wrapper *ngIf="enableFeedback" [config]="{disableClose: false, size: small}" (dismiss)="closeModal()">
+    <ng-template sbModalContent let-data>
+      <div class="sb-modal">
+        <div class="transition ui dimmer page modals active visible">
+          <div class="ui modal transition active visible normal">
+            <button aria-label="close dialog" mat-dialog-close class="mat-close-btn">
+              <span>&times;</span>
+            </button>
+            <form [formGroup]="feedbackForm" (ngSubmit)="handleSubmitData()">
+                <div class="sb-modal-header">
+                    {{ feedbackText }}
+                </div>
+                <div class="sb-modal-content o-y-visible">
+                    <textarea class="sb-form-control"  formControlName="feedback" (keydown)="handleKeyDown($event)" placeholder="Enter feedback" maxlength="250" rows="10"></textarea>
+                    <small class="mt-4 pull-right sb-color-grey fxsmall counter">{{ maxCount }}
+                            {{ resourceService?.frmelmnts?.lbl?.characterleft }}</small>
+                </div>
+                <div class="sb-modal-actions">
+                <button button type="submit"  [disabled]="feedbackForm.invalid" [ngClass]="{'sb-btn-disabled': feedbackForm.invalid}" class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0">
+                    {{ isAbortForm ? resourceService?.frmelmnts?.btn.abort : resourceService?.frmelmnts.btn.eval }}
+                </button>
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" type="button" tabindex="0"
+                    (click)="closeModal()">
+                    {{resourceService.frmelmnts?.btn?.cancel}}
+                </button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </app-modal-wrapper>
+

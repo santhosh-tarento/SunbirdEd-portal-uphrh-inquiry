@@ -165,7 +165,12 @@
       "RECOMMENDED_COURSE": "recommended/courses",
       "UNENROLL_USER_COURSE": "course/v1/unenrol",
       "GET_QR_CODE_FILE": "course/v1/qrcode/download",
-      "GET_REPORTS_METADATA": "course-reports/metadata"
+      "GET_REPORTS_METADATA": "course-reports/metadata",
+      "ENROLL_USERS_TO_COURSE": "course/v1/admin/bulk/enrol",
+      "UNENROLL_USERS_TO_COURSE": "course/v1/admin/bulk/unenrol",
+      "SUBMIT_FOR_EVAL": "course/v1/course/admin/course/eval",
+      "ISSUE_CERTIFICATE":"course/v1/course/batch/piaa/cert/issue",
+      "NOT_ISSUE_CERTIFICATE":"course/v1/course/admin/course/notissuecertificate"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",
@@ -208,6 +213,7 @@
       "ADD_USERS": "course/v1/batch/user/add",
       "GET_DETAILS": "course/v1/batch/read",
       "GET_PARTICIPANT_LIST": "course/v1/batch/participants/list",
+      "GET_BATCH_PARTICIPANT_LIST":"course/v1/batch/admin/participants/list",
       "GET_BATCHS": "course/v1/batch/list",
       "REMOVE_USERS": "course/v1/batch/user/remove"
     },
@@ -345,7 +351,8 @@
     "QUESTIONSET": {
       "CREATE": "questionset/v1/create",
       "READ": "questionset/v1/read",
-      "HIERARCHY_READ": "questionset/v1/hierarchy"
+      "HIERARCHY_READ": "questionset/v1/hierarchy",
+      "RETIRE": "questionset/v1/retire"
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"

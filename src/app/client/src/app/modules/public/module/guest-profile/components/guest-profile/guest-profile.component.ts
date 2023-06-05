@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
-import { ResourceService, UtilService, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, UtilService, NavigationHelperService, ToasterService, ServerResponse } from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -37,6 +37,8 @@ export class GuestProfileComponent implements OnInit {
   editProfileInteractEdata: IInteractEventEdata;
   editFrameworkInteractEData: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+  guestProfileConfig:{}
+  showGuestProfileConfig:boolean = true
   public unsubscribe$ = new Subject<void>();
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -56,6 +58,7 @@ export class GuestProfileComponent implements OnInit {
     this.initLayout();
     this.getLocation();
     this.setInteractEventData();
+    this.getGuestContentConfig();
   }
 
   getGuestUser() {
@@ -64,6 +67,15 @@ export class GuestProfileComponent implements OnInit {
       this.userRole = this.isDesktop && _.get(this.guestUser, 'role') ? this.guestUser.role : localStorage.getItem('guestUserType');
     });
   }
+  getGuestContentConfig(){
+    this.userService.userProfileContent$.subscribe((data)=>{
+      if(data){
+        this.showGuestProfileConfig = data['userProfileContent']['guestUserVisibiliity']
+      } 
+    });
+    this.userService.getUserProfileContentData();
+  }
+
 
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -80,6 +92,7 @@ export class GuestProfileComponent implements OnInit {
       this.deviceProfile = _.get(response, 'result');
     });
   }
+
 
   updateProfile(event) {
     // this.showEdit = !this.showEdit;

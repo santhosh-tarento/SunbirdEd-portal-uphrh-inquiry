@@ -34,7 +34,7 @@ export class CourseBatchService {
     };
     return this.learnerService.post(option);
   }
-  getUserList(requestParam: SearchParam = {}): Observable<ServerResponse> {
+  getUserList(requestParam: SearchParam = {}, assessmentType?: string): Observable<ServerResponse> {
     if (_.isEmpty(requestParam) && this.defaultUserList) {
       return observableOf(this.defaultUserList);
     } else {
@@ -57,7 +57,13 @@ export class CourseBatchService {
       } else if (mentorOrg) {
         option.data.request.filters['organisations.organisationId'] = mentorOrg;
       }
+
+      /** Only for PIAA assessment, instead of Mentors, we need Nodal officers */
       option.data.request.filters['organisations.roles'] = ['COURSE_MENTOR'];
+      if (assessmentType && assessmentType === 'piaa assessment') {
+        option.data.request.filters['organisations.roles'] = ['NODAL_OFFICER'];  
+      }
+
       return this.learnerService.post(option).pipe(map((data) => {
         if (_.isEmpty(requestParam)) {
           this.defaultUserList = data;
@@ -100,6 +106,15 @@ export class CourseBatchService {
   getParticipantList(data) {
     const options = {
       url: this.configService.urlConFig.URLS.BATCH.GET_PARTICIPANT_LIST,
+      data: data
+    };
+    return this.learnerService.post(options).pipe(map((response: any) => {
+      return _.get(response, 'result.batch.participants') || [];
+    }));
+  }
+  getbatchParticipantList(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.BATCH.GET_BATCH_PARTICIPANT_LIST,
       data: data
     };
     return this.learnerService.post(options).pipe(map((response: any) => {
@@ -186,4 +201,45 @@ export class CourseBatchService {
     }
     return certificateDescription;
   }
+
+  enrollUsersToBatch(request): Observable<any> {
+    const option = {
+      url: this.configService.urlConFig.URLS.COURSE.ENROLL_USERS_TO_COURSE,
+      data: request
+    };
+    return this.learnerService.post(option);
+  }
+
+  unenrollUsersToBatch(request):Observable<any> {
+    const option = {
+      url: this.configService.urlConFig.URLS.COURSE.UNENROLL_USERS_TO_COURSE,
+      data:request
+    }
+    return this.learnerService.post(option)
+  }
+  
+  submitforEval(request){
+   const option = {
+    url: this.configService.urlConFig.URLS.COURSE.SUBMIT_FOR_EVAL,
+    data: request
+   }
+   return this.learnerService.post(option)
+  }
+
+  issueCertificate(request){
+    const option = {
+     url: this.configService.urlConFig.URLS.COURSE.ISSUE_CERTIFICATE,
+     data: request
+    }
+    return this.learnerService.post(option)
+   }
+
+   rejectCertificate(request){
+    const option = {
+     url: this.configService.urlConFig.URLS.COURSE.NOT_ISSUE_CERTIFICATE,
+     data: request
+    }
+    return this.learnerService.post(option)
+   }
+
 }

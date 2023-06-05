@@ -262,6 +262,46 @@
                     "name": "Created On"
                 }
             ],
+            "assignStudentsortingOptions":  [
+                {
+                    "field": "name",
+                    "name": "Student Name"
+                },
+                {
+                    "field": "attemptedOn",
+                    "name": "Attempted On"
+                }
+            ],
+            "pendingStudentsortingOptions":  [
+                {
+                    "field": "name",
+                    "name": "Student Name"
+                },
+                {
+                    "field": "attemptedOn",
+                    "name": "Attempted On"
+                }
+            ],
+            "adminStudentsortingOptions":  [
+                {
+                    "field": "name",
+                    "name": "Student Name"
+                },
+                {
+                    "field": "attemptedOn",
+                    "name": "Attempted On"
+                }
+            ],
+            "adminPendingStudentsortingOptions":  [
+                {
+                    "field": "name",
+                    "name": "Student Name"
+                },
+                {
+                    "field": "attemptedOn",
+                    "name": "Attempted On"
+                }
+            ],
             "upForReviewSortingOptions": [
                 {
                     "field": "lastUpdatedOn",

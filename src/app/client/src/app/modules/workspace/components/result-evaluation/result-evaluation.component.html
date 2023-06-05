@@ -1,0 +1,25 @@
+<div class="sb-g">
+    <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
+        <div class="d-flex flex-dr">
+            <div class="d-flex flex-ai-center">
+                <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" (click)="navigateToAssessments()">
+                    <i class="icon-svg icon-svg--xxs icon-back mr-4">
+                        <svg class="icon icon-svg--primary">
+                            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                        </svg>
+                    </i>
+                </button>
+            </div>
+            <div class="d-flex flex-dc ml-16">
+                <h4 class="header font-weight-bold mb8">{{ assessment?.name }}</h4>
+                <div class="fsmall">{{ assessment?.description }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav mat-tab-nav-bar mat-align-tabs="center">
+    <a mat-tab-link *ngFor="let link of navLinks"
+     (click)="navigateToLink(link.path)"
+     [active]="activeLink === link.path"> {{link.label}} </a>
+</nav>
+<router-outlet></router-outlet>

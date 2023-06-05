@@ -303,12 +303,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
   batchUpdate(batch) {
-    if (batch.enrollmentType === 'open') {
+    if (batch.enrollmentType === 'open' || batch.enrollmentType === 'invite-only') {
       this.courseBatchService.setUpdateBatchDetails(batch);
     }
     this.router.navigate(['update/batch', batch.identifier],
       {
-        queryParams: { enrollmentType: batch.enrollmentType },
+        queryParams: { enrollmentType: batch.enrollmentType, assessmentType: _.get(this.courseHierarchy, 'primaryCategory') },
         relativeTo: this.activatedRoute
       });
   }
@@ -366,6 +366,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   isCertAdded(batch) {
+    const endDate = dayjs(batch.endDate).format('YYYY-MM-DD');
+    if(this.todayDate > endDate){
+      this.batchStatus = this.statusOptions[2].value;
+    }
    return _.isEmpty(_.get(batch, 'cert_templates')) ? false : true;
   }
   logTelemetry(id, content?: {}, batchId?) {

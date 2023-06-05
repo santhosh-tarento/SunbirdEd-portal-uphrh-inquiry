@@ -24,6 +24,10 @@ export class CertConfigModel {
             const scoreRange = (_.get(rawValues, 'scoreRange')).substr(0, (_.get(rawValues, 'scoreRange')).indexOf('%'));
             criteria['assessment'] = { score: {'>=': parseInt(scoreRange)}};
         }
+
+        if (_.get(rawValues, 'expiry_duration')) {
+            criteria['expiry_duration'] =  _.get(rawValues, 'expiry_duration');
+        }
         return criteria;
     }
 
@@ -38,6 +42,9 @@ export class CertConfigModel {
         [{ name: this.dropDownFields.MY_STATE_TEACHER }] : [{ name: this.dropDownFields.ALL }];
         dropDowns['certTypes'] = _.get(criteria, 'enrollment.status') === 2 ? [{ name: this.dropDownFields.COMPLETION_CERTIFICATE }] : [{}];
         dropDowns ['scoreRange'] = _.get(criteria, 'assessment.score') ? criteria.assessment.score['>='] + '%' : '';
+        if (_.get(criteria, 'expiry_duration')) {
+            dropDowns['expiry_duration'] =  _.get(criteria, 'expiry_duration');
+        }
         return dropDowns;
     }
 

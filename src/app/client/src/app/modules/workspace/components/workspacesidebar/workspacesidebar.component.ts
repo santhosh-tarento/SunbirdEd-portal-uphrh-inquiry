@@ -3,6 +3,9 @@ import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
 import {Router} from '@angular/router';
 import { WorkSpaceService } from './../../services';
+import { Observable, observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 /**
  * The Workspace side  component shows the sidebar for workspace
  */
@@ -96,6 +99,21 @@ export class WorkspacesidebarComponent implements OnInit {
   private router: Router;
 
   /**
+   * Roles to show only for the Nodal officer.
+   * @type {Array<string>}
+   * @memberof WorkspacesidebarComponent
+   */
+  nodalOfficerRole: Array<string>;
+
+  /**
+   * Roles for which result evaluation tab to be shown
+   * @type {Array<string>}
+   * @memberof WorkspacesidebarComponent
+   */
+  resultEvaluationRole: Array<string>;
+
+
+  /**
   * Constructor to create injected service(s) object
      Default method of Draft Component class
      * @param {ResourceService} resourceService Reference of ResourceService
@@ -111,7 +129,9 @@ export class WorkspacesidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.workSpaceService.getQuestionSetCreationStatus();
+    const getQuestionSet = this.workSpaceService.getQuestionSetCreationStatus();
+    const getWorkspaceSet = this.workSpaceService.getWorkspaceCreationStatus();
+    this.workSpaceService.getWorkspaceSearchLabelConfig();
     this.alltextbookRole = this.config.rolesConfig.workSpaceRole.alltextbookRole;
     this.createRole = this.config.rolesConfig.workSpaceRole.createRole;
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
@@ -126,6 +146,8 @@ export class WorkspacesidebarComponent implements OnInit {
     this.allContentRole = this.config.rolesConfig.workSpaceRole.allContentRole;
     this.flagReviewer = this.config.rolesConfig.workSpaceRole.flagReviewer;
     this.collaboratingRole = this.config.rolesConfig.workSpaceRole.collaboratingRole;
+    this.nodalOfficerRole = this.config.rolesConfig.workSpaceRole.nodalOfficer;
+    this.resultEvaluationRole  = this.config.rolesConfig.workSpaceRole.resultEvaluationRole;
   }
 
   setInteractData(id) {

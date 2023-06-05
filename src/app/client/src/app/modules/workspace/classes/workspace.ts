@@ -31,7 +31,7 @@ export class WorkSpace {
     * Search Api call
     */
     search(searchParams) {
-        return this.searchService.compositeSearch(searchParams);
+        return (searchParams.type) ? this.searchService.userSearch(searchParams) : this.searchService.compositeSearch(searchParams);
     }
 
     /**
@@ -114,6 +114,14 @@ export class WorkSpace {
         };
         return this.workSpaceService.deleteContent(DeleteParam);
     }
+
+    /**
+    * Delete  Question Set Api call .
+    */
+     deleteQuestionSet(questionSetId) {
+        return this.workSpaceService.deleteQuestionSet(questionSetId);
+    }
+
     /**
     * Method to remove content localcaly
     */

@@ -34,7 +34,7 @@
             <div class="sb-field-group">
               <div class="four wide column">
                 <div>
-                  <label class="required">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
+                  <label class="required text-uppercase">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
                   <div class="d-flex py-8 flex-w-wrap">
                     <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                       <input (change)="handleInputChange('issue-certificate-yes', undefined)"
@@ -64,7 +64,7 @@
             </div>
             <div class="four wide column">
               <div *ngIf="showDiscussionForum === 'Yes'">
-                <label>{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
+                <label class-="text-uppercase">{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
                 <div class="d-flex py-8 flex-w-wrap">
                   <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                     <input formControlName="enableDiscussions" type="radio" id="true" value="true">
@@ -77,68 +77,83 @@
                 </div>
               </div>
               <div class="d-flex flex-dc flex-w-wrap" *ngIf="courseCreator">
-                <div class="mr-8">
-                  <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
+                <div class="mr-8 sb-field-group">
+                  <label for="Enrollment Type" class="required">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
                 </div>
-                <div class="sb-radio-btn-checkbox sb-radio-btn-primary py-8">
-                  <input id="create-open" type="radio" value='open' name="enrollmentType"
-                    formControlName="enrollmentType">
-                  <label for="create-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
+                <div class="d-flex flex-dr flex-w-wrap">
+                  <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary py-8" *ngIf="assessmentType !== 'piaa assessment'">
+                    <input id="create-open" type="radio" value='open' name="enrollmentType"
+                      formControlName="enrollmentType">
+                    <label for="create-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
+                  </div>
+                  <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary py-8" *ngIf="assessmentType === 'piaa assessment'">
+                    <input id="create-invite-only" type="radio" value='invite-only' name="enrollmentType"
+                      formControlName="enrollmentType">
+                    <label for="create-invite-only">{{resourceService?.frmelmnts?.lbl?.inviteonly}}</label>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="d-flex flex-w-wrap my-16">
-            <div class="sb-field-group pr-8"
-              [ngClass]="createBatchForm.controls['startDate'].invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine ? 'error': ''">
-              <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
-              <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
-                <mat-form-field appearance="fill" class="sb-mat__datepicker">
-                  <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
-                  <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="pickerMinDate">
-                  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #startPicker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div class="mt-0 mb-8 ui pointing red basic label below"
-                *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
-                {{resourceService?.messages?.stmsg?.m0113}}
-              </div>
-            </div>
-            <div class="sb-field-group">
-              <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
-              <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
-                <mat-form-field appearance="fill" class="sb-mat__datepicker">
-                  <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
-                  <input matInput [matDatepicker]="endDatePicker" formControlName="endDate"
-                    [min]="getPickerMinDateForEndDate()">
-                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #endDatePicker></mat-datepicker>
-                </mat-form-field>
+            <div class="d-flex">
+              <div class="sb-field-group pr-8"
+                [ngClass]="createBatchForm.controls['startDate'].invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine ? 'error': ''">
+                <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
+                <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
+                  <mat-form-field appearance="fill" class="sb-mat__datepicker">
+                    <mat-label>{{resourceService?.frmelmnts?.lbl?.startdate}}</mat-label>
+                    <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="pickerMinDate">
+                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="mt-0 mb-8 ui pointing red basic label below"
+                  *ngIf="createBatchForm.controls.startDate.invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine">
+                  {{resourceService?.messages?.stmsg?.m0113}}
+                </div>
               </div>
             </div>
-            <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open'"
-              [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
-              <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
-              <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
-                <mat-form-field appearance="fill" class="sb-mat__datepicker" [ngClass]="{'disabled': !createBatchForm.value.startDate}"
-                  (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])">
-                  <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</mat-label>
-                  <input matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
-                    [min]="createBatchForm.value.startDate" [max]="createBatchForm.value.endDate">
-                  <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
-                </mat-form-field>
+            <div class="d-flex">
+              <div class="sb-field-group">
+                <label>{{resourceService?.frmelmnts?.lbl?.enddate}}</label>
+                <div apply-script class="ui calendar rangeendAdd" id="rangeendAdd">
+                  <mat-form-field appearance="fill" class="sb-mat__datepicker">
+                    <mat-label>{{resourceService?.frmelmnts?.lbl?.enddate}}</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" formControlName="endDate"
+                      [min]="getPickerMinDateForEndDate()">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
               </div>
-              <div class="mt-0 mb-8 ui pointing red basic label below"
-                *ngIf="createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine? 'error': ''">
-                {{resourceService?.messages?.stmsg?.m0135}}
+            </div>
+            <div class="d-flex">
+              <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open' && createBatchForm.value.enrollmentType !== 'invite-only'"
+                [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
+                <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
+                <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
+                  <mat-form-field appearance="fill" class="sb-mat__datepicker" [ngClass]="{'disabled': !createBatchForm.value.startDate}"
+                    (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])">
+                    <mat-label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate}}</mat-label>
+                    <input matInput [matDatepicker]="enrollmentEndDatePicker" formControlName="enrollmentEndDate"
+                      [min]="createBatchForm.value.startDate" [max]="createBatchForm.value.endDate">
+                    <mat-datepicker-toggle matSuffix [for]="enrollmentEndDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #enrollmentEndDatePicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="mt-0 mb-8 ui pointing red basic label below"
+                  *ngIf="createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine? 'error': ''">
+                  {{resourceService?.messages?.stmsg?.m0135}}
+                </div>
               </div>
             </div>
           </div>
           <div class="sb-field-group mb-8">
-            <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
+            <label [ngClass]="{'required': assessmentType === 'piaa assessment'}">
+              {{ (assessmentType === 'piaa assessment') ? resourceService?.frmelmnts?.lbl?.batchnodalofficers : resourceService?.frmelmnts?.lbl?.batchmentors }}
+            </label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
               <mat-select formControlName="mentors" role="listbox" multiple aria-label="mentor list"
                 class="selection" (selectionChange)="selectedMultiValues($event, 'mentors')">
@@ -158,7 +173,7 @@
             </mat-form-field>
           </div>
 
-          <div class="sb-field-group " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
+          <div class="sb-field-group " *ngIf="createBatchForm.value.enrollmentType !== 'open' && createBatchForm.value.enrollmentType !== 'invite-only'">
             <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
             <mat-form-field appearance="fill" class="sb-mat__dropdown w-100 mb-16">
               <mat-select formControlName="users" role="listbox" multiple aria-label="participant list"
@@ -172,7 +187,7 @@
                 <mat-option class="mat-dropdown__options" role="option" *ngFor="let participant of participantList" [value]="participant.id"
                 attr.aria-label="{{participant.name}}">
                   <img class="ui mini avatar image"
-                      src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+                      src="{{mentor?.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
                   {{participant.name}}{{participant.otherDetail}}
                 </mat-option>
               </mat-select>

@@ -96,12 +96,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryCdata: Array<{}> = [];
   url = document.location.origin;
   instance: string;
+  assessmentType: string;
 
   private discussionCsService: any;
   createForumRequest: any;
   showDiscussionForum: string;
-  selectedMentorList: Array<any> = []
-  selectedParticipantList: Array<any> = []
+  selectedMentorList: Array<any> = [];
+  selectedParticipantList: Array<any> = [];
 
   /**
 	 * Constructor to create injected service(s) object
@@ -141,8 +142,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.activatedRoute.parent.params.pipe(mergeMap((params) => {
-      this.courseId = params.courseId;
-      this.initializeFormFields();
+      this.courseId = params.courseId;      
       this.setTelemetryInteractData();
       this.showCreateModal = true;
       return this.fetchBatchDetails();
@@ -150,6 +150,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.showDiscussionForum = _.get(data.courseDetails, 'discussionForum.enabled');
+        this.assessmentType = _.get(data.courseDetails, 'primaryCategory').toLowerCase();
+        this.initializeFormFields();
         if (this.showDiscussionForum === 'Yes') {
           this.fetchForumConfig();
         }
@@ -167,7 +169,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         this.redirect();
       });
-    this.courseBatchService.getUserList({ filters: { 'status': '1' } })
+    this.courseBatchService.getUserList({ filters: { 'status': '1' } }, this.assessmentType)
       .subscribe((res) => {
         const list = this.sortUsers(res);
         this.mentorList = list?.mentorList;
@@ -224,6 +226,12 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       tncCheck: new FormControl(false, [Validators.requiredTrue]),
       enableDiscussions: new FormControl('false', [Validators.required])
     });
+
+    if (this.assessmentType === 'piaa assessment') {
+      this.createBatchForm.get('mentors').setValidators([Validators.required]);
+      this.createBatchForm.get('enrollmentType').setValue('invite-only');
+      this.createBatchForm.updateValueAndValidity();
+    }
   }
   private sortUsers(res) {
     const participantList = [];
@@ -242,7 +250,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
             otherDetail: this.getUserOtherDetail(userData)
           };
           _.forEach(userData.roles, (roles) => {
-            if (roles.role === 'COURSE_MENTOR') {
+            if (roles.role === 'COURSE_MENTOR' || roles.role === 'NODAL_OFFICER') {
               mentorList.push(user);
             }
           });

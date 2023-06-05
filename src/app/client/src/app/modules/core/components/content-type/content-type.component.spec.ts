@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { ContentTypeComponent } from './content-type.component';
 import { mockData } from './content-type.component.spec.data';
 import { TelemetryService } from '../../../telemetry/services';
+import { PermissionService } from '../../services';
 
 describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
@@ -13,6 +14,8 @@ describe('ContentTypeComponent', () => {
     getFormConfig: jest.fn().mockReturnValue(of(mockData.formData)) as any
   };
   const mockResourceService: Partial<ResourceService> = {};
+  const mockPermissionService: Partial<PermissionService> = {};
+
   const mockRouter: Partial<Router> = {
     navigate: jest.fn()
   };
@@ -59,6 +62,7 @@ describe('ContentTypeComponent', () => {
       mockLayoutService as LayoutService,
       mockUtilService as UtilService,
       mockNavigationhelperService as NavigationHelperService,
+      mockPermissionService as PermissionService
     )
   });
 

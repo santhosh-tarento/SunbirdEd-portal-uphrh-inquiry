@@ -167,7 +167,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
     this.config = config;
     this.state = 'collaborating-on';
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0124,
+      'loaderMessage': this.resourceService?.messages?.stmsg?.m0124,
     };
     this.noResultMessage = {
       'messageText': 'messages.stmsg.m0123'

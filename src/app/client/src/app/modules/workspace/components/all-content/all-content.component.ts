@@ -194,6 +194,11 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   private deleteModal: any;
 
   /**
+  * label for filter selected, used especially for changing BMGS to FRACCL
+  */
+  label: Array<string>; 
+
+  /**
    * To show/hide collection modal
    */
   public collectionListModal = false;
@@ -216,7 +221,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public modalService: SuiModalService) {
+    config: ConfigService, public modalService: SuiModalService, ) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -226,7 +231,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     this.config = config;
     this.state = 'allcontent';
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0110,
+      'loaderMessage': this.resourceService?.messages?.stmsg?.m0110,
     };
     this.sortingOptions = this.config.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
@@ -253,7 +258,14 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         this.query = this.queryParams['query'];
         this.fecthAllContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
+
+    this.workSpaceService.workspaceSearchLabelConfig$.subscribe((searchLabelConfig) => {
+      if(searchLabelConfig.searchLabel?.label && searchLabelConfig.searchLabel?.label.length) {
+        this.label = searchLabelConfig.searchLabel?.label;
+      }
+    })
   }
+
   /**
   * This method sets the make an api call to get all UpForReviewContent with page No and offset
   */
@@ -349,6 +361,9 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
       this.deleteContent(this.currentContentId);
       return;
+    } else if(this.contentMimeType === 'application/vnd.sunbird.questionset') {
+      this.deleteQuestionSetContent(this.currentContentId);
+      return;
     }
 
     this.getLinkedCollections(this.currentContentId)
@@ -389,10 +404,16 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
             medium: 'Medium',
             board: 'Board',
             channel: 'Tenant Name'
-            };
-            if (!_.isUndefined(modal)) {
-              this.deleteModal.deny();
-            }
+          };
+          if (this.label && this.label?.length) {
+            this.label.forEach((obj: any) => {
+              this.headers[obj.id] = obj.name;
+            });
+          }
+          
+          if (!_.isUndefined(modal)) {
+            this.deleteModal.deny();
+          }
           this.collectionListModal = true;
           },
           (error) => {
@@ -432,6 +453,33 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.deleteModal.deny();
     }
   }
+
+    /**
+  * This method deletes questionset using the questionset id.
+  */
+  deleteQuestionSetContent(questionSetId) {
+      this.showLoader = true;
+      this.loaderMessage = {
+        'loaderMessage': this.resourceService.messages.stmsg.m0034,
+      };
+      this.deleteQuestionSet(questionSetId).subscribe(
+        (data: ServerResponse) => {
+          this.showLoader = false;
+          this.allContent = this.removeAllMyContent(this.allContent, questionSetId);
+          if (this.allContent.length === 0) {
+            this.ngOnInit();
+          }
+          this.toasterService.success(this.resourceService.messages.smsg.m0006);
+        },
+        (err: ServerResponse) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.fmsg.m0022);
+        }
+      );
+      if (!_.isUndefined(this.deleteModal)) {
+        this.deleteModal.deny();
+      }
+    }
 
   /**
    * This method helps to navigate to different pages.

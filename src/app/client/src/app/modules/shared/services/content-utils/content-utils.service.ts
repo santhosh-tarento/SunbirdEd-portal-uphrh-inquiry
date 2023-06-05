@@ -91,4 +91,37 @@ export class ContentUtilsServiceService {
     nodes.forEach((eachnode, index) => objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
     return objectRollUp;
   }
+
+  /* Check if question set blueptint or normal question set*/
+  isQuestionSetBP(metadata) {
+    let isQuestionSetBP = false;
+    if(metadata?.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      const childMimeTypes = _.map(metadata.children, 'mimeType');
+      const isSectionsAvailable =  childMimeTypes[0] === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset;
+      if(isSectionsAvailable) {
+        const section = metadata.children[0];
+        if((section.children.length === 0) && ((section.criterias && section.criterias.length > 0) || (section?.board && section?.medium && section?.gradeLevel && section?.subject))) {
+          isQuestionSetBP= true;
+        }
+      }
+    }
+    return isQuestionSetBP;
+  }
+
+  /* Prepare and return composite search */
+  getCompositeSearchParams(criteria) {
+    const searchParams= {
+      filters: {
+        primaryCategory: criteria?.selectedQuestionType || "Multiple Choice Question",
+        board: criteria?.board,
+        medium: criteria?.medium,
+        gradeLevel: criteria?.gradeLevel,
+        subject: criteria?.subject,
+        status: ["Live"],
+        objectType:["Question"]
+      },
+      limit: criteria?.requiredQuestionCount || 10
+    }
+    return searchParams;
+  }
 }

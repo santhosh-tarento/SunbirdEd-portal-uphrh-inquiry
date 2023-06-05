@@ -336,12 +336,12 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
-      const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+      const obj = _.find(this.inViewLogs, { objid: elem?.data?.metaData?.identifier });
       if (!obj) {
         this.inViewLogs.push({
-          objid: elem.data.metaData.identifier,
-          objtype: elem.data.metaData.contentType || 'content',
-          index: elem.id
+          objid: elem?.data?.metaData?.identifier,
+          objtype: elem?.data?.metaData?.contentType || 'content',
+          index: elem?.id
         });
       }
     });

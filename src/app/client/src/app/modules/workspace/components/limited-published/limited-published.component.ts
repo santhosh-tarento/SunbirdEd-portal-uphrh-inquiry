@@ -168,7 +168,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit, Afte
     this.config = config;
     this.contentUtilsServiceService = contentUtilsServiceService;
     this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0082,
+      'loaderMessage': this.resourceService?.messages?.stmsg?.m0082,
     };
     this.noResultMessage = {
       'message': 'messages.stmsg.m0008',

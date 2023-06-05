@@ -47,6 +47,7 @@
               [hasLabels]="false" #multiSelect *ngIf="field.code === 'gradeLevel'">
               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
             </sui-multi-select>
+
           </div>
           <div *ngIf="field.code === 'channel'">
             <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}}
@@ -61,6 +62,11 @@
           <div *ngIf="field.code==='topic'">
             <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field"
               (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
+          </div>
+          <div  *ngIf="field.code ==='date'"  class="sb-field ui left icon input">
+            <label>{{resourceService?.frmelmnts?.lbl.attemptedOn}}</label>
+            <input class="sb-form-control" placeholder={{resourceService?.frmelmnts?.lbl.attemptedOn}}   [(ngModel)]="formInputData[field.code]"
+              suiDatepicker  [pickerMode]="'date'">
           </div>
         </div>
 

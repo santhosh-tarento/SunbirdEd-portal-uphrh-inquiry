@@ -26,7 +26,7 @@
       </div>
     </div>
     <div *ngIf="data.action && (data.action.right || data.action.left || data.rating)" class="extra data">
-      <div *ngIf=" data.action.right" class="right floated">
+      <div *ngIf="data.action.right && showDeleteBtn" class="right floated">
         <a [ngSwitch]="data.action.right.displayType">
           <span *ngSwitchCase="'button'">
             <button class="{{data.action.right.class}}" tabindex="0" (click)="onAction(data,data.action.right); $event.stopPropagation()">
