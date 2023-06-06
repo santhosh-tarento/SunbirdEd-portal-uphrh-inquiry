@@ -217,10 +217,7 @@ export class PublicPlayerService {
   }
 
   getQuestionSetHierarchyByPost(req){
-    const headers = new HttpHeaders({
-      'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA'
-    })
-    return this.http.post(`/api/questionset/v1/hierarchy/${req.contentID}`, req, {headers:headers}).pipe(map((response: any) => {
+      return this.http.post(`${this.configService.urlConFig.URLS.LEARNER_PREFIX}${this.configService.urlConFig.URLS.QUESTIONSET.HIERARCHY_READ}/${req.contentID}`, req).pipe(map((response: any) => {
       this.contentData = response.questionSet;
       return response
     }))
