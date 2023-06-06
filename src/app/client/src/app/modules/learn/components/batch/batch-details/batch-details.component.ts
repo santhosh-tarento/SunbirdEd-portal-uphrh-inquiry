@@ -366,6 +366,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   isCertAdded(batch) {
+    const endDate = dayjs(batch.endDate).format('YYYY-MM-DD');
+    if(this.todayDate > endDate){
+      this.batchStatus = this.statusOptions[2].value;
+    }
    return _.isEmpty(_.get(batch, 'cert_templates')) ? false : true;
   }
   logTelemetry(id, content?: {}, batchId?) {
