@@ -237,8 +237,4 @@ export class PlayerService {
       this.router.navigate(['/learn/course', content.identifier], { queryParams });
     }
   }
-
-  public getQuestionSetHierarchyByPost(req,id){
-    return this.http.post('/action/questionset/v1/hierarchy'+id, req);
-  }
 }
