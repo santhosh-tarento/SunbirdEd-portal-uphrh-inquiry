@@ -914,20 +914,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             this.showLoader = false;
           });
         } {
-          console.log('*********************')
           const requestBody = {
             contentID: id,
             collectionID: this.courseHierarchy.identifier, 
             userID: this.userService._userid,
             attemptID: uuid.v4(id)
           }
-          console.log('**********************', requestBody)
-          /* use this method remove below getQuestionSetHierarchy just remove
-            .subscribe(response => {
-              console.log(response);
-            });
-            this.publicPlayerService.getQuestionSetHierarchy(id)  
-          */
           this.publicPlayerService.getQuestionSetHierarchyByPost(requestBody).pipe(
             takeUntil(this.unsubscribe))
             .subscribe((response) => {
