@@ -19,6 +19,7 @@ import { result } from 'lodash';
 import * as uuid from 'uuid';
 const ACCESSEVENT = 'renderer:question:submitscore';
 
+
 @Component({
   selector: 'app-assessment-player',
   templateUrl: './assessment-player.component.html',
@@ -885,7 +886,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       }
       if (this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
-        if(!this.activeContent.evaluable){
+        if(!this.activeContent.serverEvaluable){
         this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
           takeUntil(this.unsubscribe))
           .subscribe((response) => {
@@ -927,10 +928,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             });
             this.publicPlayerService.getQuestionSetHierarchy(id)  
           */
-          this.playerService.getQuestionSetHierarchyByPost(requestBody).subscribe(response => {
-            console.log(response);
-          });
-          this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
+          this.publicPlayerService.getQuestionSetHierarchyByPost(requestBody).pipe(
             takeUntil(this.unsubscribe))
             .subscribe((response) => {
               const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);

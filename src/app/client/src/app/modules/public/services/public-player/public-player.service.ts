@@ -10,8 +10,7 @@ import {
 import * as _ from 'lodash-es';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
-import { HttpClient } from '@angular/common/http';
-
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -218,9 +217,12 @@ export class PublicPlayerService {
   }
 
   getQuestionSetHierarchyByPost(req){
-    return this.http.post('/learner/questionset/v1/hierarchy', req).pipe(map((response: any) => {
+    const headers = new HttpHeaders({
+      'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJSR3RkMkZzeG1EMnJER3I4dkJHZ0N6MVhyalhZUzBSSyJ9.kMLn6177rvY53i0RAN3SPD5m3ctwaLb32pMYQ65nBdA'
+    })
+    return this.http.post(`/api/questionset/v1/hierarchy/${req.contentID}`, req, {headers:headers}).pipe(map((response: any) => {
       this.contentData = response.questionSet;
-      return response;
+      return response
     }))
   }
 
