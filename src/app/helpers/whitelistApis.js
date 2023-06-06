@@ -2075,8 +2075,7 @@ const API_LIST = {
     '/uci/admin/v1/conversationLogic/delete/:id',
     '/uci/admin/v1/forms/upload',
     '/kendra/user-extension/mlcore/v1/solutions/:id',
-    '/api/questionset/v1/retire/:QuestionSet_Id',
-    '/action/questionset/v1/hierarchy/:do_id'
+    '/api/questionset/v1/retire/:QuestionSet_Id'
   ]
 };
 module.exports = API_LIST;
