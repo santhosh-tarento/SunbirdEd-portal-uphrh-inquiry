@@ -843,6 +843,27 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       }
     }
   }
+  updatePlayerWithResponse(response, id){
+    const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+    const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
+    this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
+    if (response && response.context) {
+      response.context.objectRollup = this.objectRollUp;
+    }
+    const contentDetails = {contentId: id, contentData: response.questionSet };
+    this.playerConfig = serveiceRef.getConfig(contentDetails);
+    this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+      this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+      this.showPlayer = true;
+    }, (error) => {
+      this.showPlayer = true;
+    });
+    const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
+    this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+    const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+    this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+    this.playerConfig['context']['objectRollup'] = this.objectRollUp;
+  }
 
   private initPlayer(id: string) {
     let maxAttemptsExceeded = false;
@@ -886,34 +907,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       }
       if (this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
-        if(!this.activeContent.serverEvaluable){
-        this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
-          takeUntil(this.unsubscribe))
-          .subscribe((response) => {
-            const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
-            this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
-            if (response && response.context) {
-              response.context.objectRollup = this.objectRollUp;
-            }
-            const contentDetails = {contentId: id, contentData: response.questionSet };
-            this.playerConfig = serveiceRef.getConfig(contentDetails);
-            this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
-              this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
-              this.showPlayer = true;
-            }, (error) => {
-              this.showPlayer = true;
-            });
-            const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
-            this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-            const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
-            this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
-            this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
-            this.showLoader = false;
-          }, (err) => {
-            this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-            this.showLoader = false;
-          });
-        } {
+        if(this.activeContent.serverEvaluable){
           const requestBody = {
             contentID: id,
             collectionID: this.courseHierarchy.identifier, 
@@ -923,24 +917,17 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.publicPlayerService.getQuestionSetHierarchyByPost(requestBody).pipe(
             takeUntil(this.unsubscribe))
             .subscribe((response) => {
-              const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
-              this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
-              if (response && response.context) {
-                response.context.objectRollup = this.objectRollUp;
-              }
-              const contentDetails = {contentId: id, contentData: response.questionSet };
-              this.playerConfig = serveiceRef.getConfig(contentDetails);
-              this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
-                this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
-                this.showPlayer = true;
-              }, (error) => {
-                this.showPlayer = true;
-              });
-              const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
-              this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-              const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
-              this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
-              this.playerConfig['context']['objectRollup'] = this.objectRollUp; 
+             this.updatePlayerWithResponse(response,id);
+              this.showLoader = false;
+            }, (err) => {
+              this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+              this.showLoader = false;
+            });
+        } else {
+          this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
+            takeUntil(this.unsubscribe))
+            .subscribe((response) => {
+               this.updatePlayerWithResponse(response,id);
               this.showLoader = false;
             }, (err) => {
               this.toasterService.error(this.resourceService.messages.stmsg.m0009);
