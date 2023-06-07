@@ -51,7 +51,7 @@
 
           <!-- Template for displaying sections based on form configuration -->
           <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" aria-label="User Preferences">
-            <div *ngIf="getSelectedTab() === 'home'" (click)="showEdit = !showEdit" class="sb-section-preference"
+            <div *ngIf="getSelectedTab() === 'home'"  class="sb-section-preference"
               tabindex="0">
               <div class="preference">
                 <!-- <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName
@@ -90,7 +90,7 @@
                   </span> -->
                 </p>
               </div>
-              <button matTooltip="update your preferences to explore courses and assessments" matTooltipPosition="above"
+              <button matTooltip="update your preferences to explore courses and assessments" matTooltipPosition="above" (click)="showEdit = !showEdit"
                 class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
             </div>
           </div>
