@@ -25,6 +25,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   styleUrls: ['./assessment-player.component.scss']
 })
 export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
+  progressDisplay:any;
 
   constructor(
     public resourceService: ResourceService,
@@ -846,7 +847,16 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     let maxAttemptsExceeded = false;
     this.showMaxAttemptsModal = false;
     let isLastAttempt = false;
-    this.isPiaAssessmentType = _.get(this.activeContent, 'primaryCategory') === 'PIAA Question Set'
+    let  PiaaCategory = ''
+    PiaaCategory = _.get(this.activeContent, 'primaryCategory') 
+    if(PiaaCategory === 'PIAA Question Set'  ||  PiaaCategory === 'Blueprint Question Set'){
+      this.isPiaAssessmentType = true
+      this.progressDisplay = this.CourseProgressService.getCourseProgressData 
+    }
+    else {
+      this.isPiaAssessmentType = false;
+    }
+   // === 'PIAA Question Set' || 'Blueprint Question Set'
     /* istanbul ignore if */
     if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
@@ -931,6 +941,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
     }
     if (!this.isPiaAssessmentType && (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded'))) {
+      this.showMaxAttemptsModal = true;
+      this.showQSExitConfirmation = true;
+    }
+    else if(this.isPiaAssessmentType && this.progressDisplay === 100 && (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded'))) {
       this.showMaxAttemptsModal = true;
       this.showQSExitConfirmation = true;
     }

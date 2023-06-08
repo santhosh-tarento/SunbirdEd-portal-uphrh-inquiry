@@ -344,6 +344,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
+        this.courseProgressService.getCourseProgressData = this.progressToDisplay
         this.isPrimaryCategoryType = (_.get(this.courseHierarchy, 'primaryCategory')) === 'PIAA Assessment';
         if(!this.isPrimaryCategoryType){
           this.contentStatus = _parsedResponse.content || [];
