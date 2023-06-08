@@ -13,6 +13,8 @@ export class CourseProgressService {
   /**
  * Reference of content service.
  */
+
+  getCourseProgressData :any;
   public contentService: ContentService;
 
   /**
