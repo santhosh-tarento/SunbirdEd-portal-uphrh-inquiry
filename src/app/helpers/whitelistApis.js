@@ -724,6 +724,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/questionset/v1/hierarchy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ANONYMOUS]
+    },
 
     // Groups related APIs
     '/learner/group/v1/create': {
