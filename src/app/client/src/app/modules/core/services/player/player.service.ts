@@ -13,7 +13,6 @@ import { CollectionHierarchyAPI } from '../../interfaces';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
 import { PublicDataService } from './../public-data/public-data.service';
-import { HttpClient } from '@angular/common/http';
 /**
  * helper services to fetch content details and preparing content player config
  */
@@ -32,7 +31,7 @@ export class PlayerService {
   previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
-    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute, private http: HttpClient) {
+    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
