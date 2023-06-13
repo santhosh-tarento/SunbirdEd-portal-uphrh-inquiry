@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import * as _ from 'lodash-es';
 //import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 //import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
-import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
+import { QuestionCursor } from 'sunbird-quml-player-exam';
 import { EditorCursor } from 'upsmf-collection-editor';
 import { CsModule } from '@project-sunbird/client-services';
 import { PublicPlayerService } from '@sunbird/public';

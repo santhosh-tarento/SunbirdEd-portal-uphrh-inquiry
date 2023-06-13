@@ -2123,13 +2123,6 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@4.12.1":
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-4.12.1.tgz#2e450a158c18f94fbd41cc6848df00ebbf7343ba"
-  integrity sha512-bMbre57F65mghGQnBE0Mlj2YvRcEoIsKTCvD+zdga40SG+MSJSiJvHYj6o7eDiPgvegphaTi+w/yqJDM9+4q9g==
-  dependencies:
-    tslib "^2.0.0"
-
 "@project-sunbird/common-form-elements@5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-form-elements/-/common-form-elements-5.1.1.tgz#4fff567e7e9f6d8bf3ba4378ef55a9e18c2549db"
@@ -2181,13 +2174,6 @@
   version "0.0.15"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.15.tgz#7e59900fe0f1033b53ffde7cf5d6e95dea19cfdc"
   integrity sha512-YzG3EzZOYoRfl374uCDcfUzBNmkVF8YPTN12lrKjFbTI694GpDMqb6Gge83rtwCtT+hRxw5r/OPftFTguQnBCA==
-
-"@project-sunbird/sb-themes@0.0.88":
-  version "0.0.88"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.88.tgz#cd11ac1f3da915c7c433e6ac9e20ee29b6c52616"
-  integrity sha512-12eKzpToyjJAKTLLFWq9Zo3+Y6tzi2GE0YBNbErfMxs9iAubliqApkwGMH/ry2qYhV8S/uiEcE4JPwtX2HZcYA==
-  dependencies:
-    "@project-sunbird/sb-styles" "0.0.14"
 
 "@project-sunbird/sunbird-collection-editor-v9@5.0.14":
   version "5.0.14"
@@ -4762,13 +4748,6 @@ content-disposition@0.5.4:
   integrity sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==
   dependencies:
     safe-buffer "5.2.1"
-
-content-section-v11@0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/content-section-v11/-/content-section-v11-0.0.9.tgz#8c73c4ec75f49634ffe0f678aa3d82e5aa23c259"
-  integrity sha512-YagJEw5YbT8mwrU2tayxRCkBJNOAbf58B31dyS2ritaR7ZHvb9T787BwPkwzCLTMaUeZMb/XKbF8oQ0rN5XdTw==
-  dependencies:
-    tslib "^2.0.0"
 
 content-type@~1.0.4:
   version "1.0.4"
@@ -10206,11 +10185,6 @@ moment-duration-format@2.3.2:
   resolved "https://registry.yarnpkg.com/moment-duration-format/-/moment-duration-format-2.3.2.tgz#5fa2b19b941b8d277122ff3f87a12895ec0d6212"
   integrity sha512-cBMXjSW+fjOb4tyaVHuaVE/A5TqkukDWiOfxxAjY+PEqmmBQlLwn+8OzwPiG3brouXKY5Un4pBjAeB6UToXHaQ==
 
-moment@2.24.0:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
-
 moment@2.29.1, moment@^2.10.2, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
@@ -13797,6 +13771,14 @@ stylus@0.54.8:
     semver "^6.3.0"
     source-map "^0.7.3"
 
+sunbird-quml-player-exam@5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/sunbird-quml-player-exam/-/sunbird-quml-player-exam-5.3.0.tgz#d28706f9ebad14ad433261cd890996c89047f7fb"
+  integrity sha512-h9Y6kDsqj+bGHtxXK965QLrNW3qhKVqlDBjwILUbuyC58jsyK3GwksyImkP8QVYtrzZrrp/B3NfDW9sK5+mRsA==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v9" "5.1.0"
+    tslib "^2.2.0"
+
 supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
@@ -14547,10 +14529,31 @@ update-browserslist-db@^1.0.9:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-upsmf-collection-editor@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/upsmf-collection-editor/-/upsmf-collection-editor-1.0.2.tgz#6647c58f72bb119c4c9e3256d6f6bde2f4a1d876"
-  integrity sha512-71z5jKnhkjKPThvrVV9WOaHg2VbAFi4cgB9OtFIlYsa+NHhPVsjXqiXFRuwKxqdqW39fJ+n328jA+JVHyzE6Og==
+uphrh-common-consumption@^4.12.1:
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/uphrh-common-consumption/-/uphrh-common-consumption-4.12.1.tgz#4310f536bf0e0430ef0b3aacc9fb3e26a9e3bd74"
+  integrity sha512-zEQkLptUpuDZp84xSg2rHWeDgMthPNGIVELBkVlaGbV6gvU6XuxXqnSmM/e+ZA4+bn7RdRr6vklmeCRjpQrQnA==
+  dependencies:
+    tslib "^2.0.0"
+
+uphrh-content-section@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/uphrh-content-section/-/uphrh-content-section-5.1.1.tgz#6d36d675945d64db3c26b52ce846975578fa6d88"
+  integrity sha512-i1g4yNoQRZ8Ki3qdnag9T5MZ5lckj2WsigqS5vFcONOhBtiDDqVgt1o8rbbUlgPR1je2TeW9DevSAOsPi0RTCQ==
+  dependencies:
+    tslib "^2.0.0"
+
+uphrh-sb-themes@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/uphrh-sb-themes/-/uphrh-sb-themes-0.0.1.tgz#f5e8f2a53e38c2235fcac60015ff1271ec548bb9"
+  integrity sha512-pk3pf1HTWDYjAvO+/4qME2I9kblzwW8/js0GNMzdJylcQ0bRJXgLKwiNUi2cB6uL53IKXBFpV8WkWbEqs3dVyw==
+  dependencies:
+    "@project-sunbird/sb-styles" "0.0.14"
+
+upsmf-collection-editor@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/upsmf-collection-editor/-/upsmf-collection-editor-1.0.5.tgz#21a4f51f6fbb0e98300e4aa73e2ccb2ebceeef9b"
+  integrity sha512-dwA7C0D7JIe80RB1Oh+K7wC5nZTu46Lvp+uAC0BATyfkRLue7mefUnLX+7fNHkv0hzoEKZnFT7vtx0tF2Bhkuw==
   dependencies:
     tslib "^2.0.0"
 
